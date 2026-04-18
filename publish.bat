@@ -1,0 +1,2 @@
+:: Publish everything as a single a self contained file
+dotnet publish .\PensionMCP\PensionMCP.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish
