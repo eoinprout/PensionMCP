@@ -11,3 +11,5 @@ or reliance on its outputs.
 
 ## Aknowledgements 
 
+.gitignore was taken from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
+.editorconfig is the default added by visual studio

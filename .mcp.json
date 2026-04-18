@@ -1,0 +1,14 @@
+{
+  "inputs": [],
+  "servers": {
+    "PensionMCP": {
+      "type": "stdio",
+      "command": "run",
+      "args": [
+        "--project",
+        "C:\\Projects\\Course\\project\\PensionMCP\\PensionMCP\\PensionMCP.csproj"
+      ],
+      "env": {}
+    }
+  }
+}
