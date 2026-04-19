@@ -1,7 +1,7 @@
 ﻿using ModelContextProtocol;
-using PensionMCP.Tools;
+using PensionMCP.Mcp;
 
-namespace TestPensionMCP.Tools
+namespace TestPensionMCP.Mcp
 {
     public class AgeToolsTests
     {

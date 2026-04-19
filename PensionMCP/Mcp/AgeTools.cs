@@ -4,7 +4,7 @@ using PensionMCP.Engine;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace PensionMCP.Tools
+namespace PensionMCP.Mcp
 {
     [McpServerToolType]
     public static class AgeTools
