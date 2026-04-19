@@ -30,7 +30,6 @@ namespace PensionMCP.Mcp
             return $"Age: {age} years";
         }
 
-
         /// <summary>
         /// Get what is Today
         /// </summary>
