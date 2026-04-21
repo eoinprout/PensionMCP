@@ -429,3 +429,5 @@ FodyWeavers.xsd
 *.msp
 /TempNotes.txt
 /mcpb/*.mcpb
+/mcpb/server/PensionMCP.exe
+/temp
