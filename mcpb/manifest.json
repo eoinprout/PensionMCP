@@ -1,0 +1,27 @@
+{
+  "manifest_version": "0.2",
+  "name": "Pension Assistant",
+  "version": "0.0.1",
+  "description": "A pension assistant helping with rates, limits and calculations",
+  "author": {
+    "name": "Eoin Prout"
+  },
+  "server": {
+    "type": "binary",
+    "entry_point": "server/PensionMCP",
+    "mcp_config": {
+      "command": "${__dirname}/server/PensionMCP.exe",
+      "args": [],
+      "env": {}
+    }
+  },
+  "compatibility": {
+    "platforms": [
+      "win32"
+    ]
+  },
+  "keywords": [
+    "pension"
+  ],
+  "license": "MIT"
+}
