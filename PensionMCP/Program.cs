@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -11,11 +10,10 @@ builder.Logging.AddConsole(consoleLogOptions =>
     consoleLogOptions.LogToStandardErrorThreshold = LogLevel.Trace;
 });
 
-var connection = new SqliteConnection("Data Source=:memory:");
-connection.Open();
+var connectionString = DbUtils.BuildConnectionString();
 
 builder.Services.AddDbContext<PensionDbContext>(options =>
-    options.UseSqlite(connection));
+    options.UseSqlite(connectionString));
 
 builder.Services
     .AddMcpServer()
@@ -25,12 +23,20 @@ builder.Services
 
 var app = builder.Build();
 
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformation("PensionMCP starting.");
+
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<PensionDbContext>();
-    db.Database.EnsureCreated();
+    var dbPath = DbUtils.GetDatabasePath();
+    var dbExists = File.Exists(dbPath);
+    await db.Database.EnsureCreatedAsync();
+    logger.LogInformation("Database path: {DbPath}", dbPath);
+    logger.LogInformation(dbExists ? "Database already existed." : "Database was created.");
 }
 
 await app.RunAsync();
 
-connection.Dispose();
+
