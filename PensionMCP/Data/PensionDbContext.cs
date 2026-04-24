@@ -16,9 +16,9 @@ namespace PensionMCP.Data
         {
             //Seed data to help with demo and testing.
             modelBuilder.Entity<Client>().HasData(
-                new Client { Id = 1, Name = "James Kirk", DateOfBirth = new DateOnly(1974, 12, 12) },
-                new Client { Id = 2, Name = "Nyota Uhura", DateOfBirth = new DateOnly(1982, 7, 25) },
-                new Client { Id = 3, Name = "Leonard McCoy", DateOfBirth = new DateOnly(1990, 11, 1) }
+                new Client { Id = 1, Name = "James Kirk", DateOfBirth = new DateOnly(1974, 12, 12), NetRelevantIncome = 44000m },
+                new Client { Id = 2, Name = "Nyota Uhura", DateOfBirth = new DateOnly(1982, 7, 25), NetRelevantIncome = 45000m },
+                new Client { Id = 3, Name = "Leonard McCoy", DateOfBirth = new DateOnly(1990, 11, 1), NetRelevantIncome = 120000m }
             );
         }
     }

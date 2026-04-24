@@ -20,7 +20,8 @@ namespace TestPensionMCP.Data
                 .Options;
 
             _context = new PensionDbContext(options);
-            await _context.Database.EnsureCreatedAsync();
+            await _context.Database.MigrateAsync();
+
         }
 
         [TearDown]
@@ -28,6 +29,15 @@ namespace TestPensionMCP.Data
         {
             _context.Dispose();
             _connection.Dispose();
+        }
+
+
+        [Test]
+        public async Task NewlyAdded_NetRelevantIncome_Field_Exists()
+        {
+            // Added to help debugging of issue with seed data migration
+            var kirk = await _context.Clients.FirstAsync(c => c.Name == "James Kirk");
+            Assert.That(kirk.NetRelevantIncome, Is.EqualTo(44000m));
         }
 
         [Test]

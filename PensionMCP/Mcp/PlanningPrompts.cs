@@ -26,6 +26,8 @@ namespace PensionMCP.Mcp
                 2: Always base calculations on data retrieved from the tools, resources or provided by the accountant, Not on assumptions.
                 """);
 
+            // TODO: add a taxonomy ?
+
         }
 
     }

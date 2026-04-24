@@ -35,7 +35,11 @@ using (var scope = app.Services.CreateScope())
     var dbExists = File.Exists(dbPath);
 
     // TODO add some error handling to cover senario where DB wasn't created
-    await db.Database.EnsureCreatedAsync();
+    logger.LogInformation("Starting MigrateAsync.");
+    await db.Database.MigrateAsync();
+
+
+
     logger.LogInformation("Database path: {DbPath}", dbPath);
     logger.LogInformation(dbExists ? "Database already existed." : "Database was created.");
 }

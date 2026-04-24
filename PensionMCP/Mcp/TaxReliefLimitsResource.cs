@@ -19,6 +19,7 @@ namespace PensionMCP.Mcp
         [Description("Returns the Revenue age-based pension contribution relief limits as JSON")]
         public static string GetTaxReliefLimits()
         {
+            // TODO: Look at a better text format than JSON for this data, Human readable would be nice as its a resource.
             return JsonSerializer.Serialize(TaxReliefLimits.ContributionLimits,
                 new JsonSerializerOptions { WriteIndented = true });
         }
