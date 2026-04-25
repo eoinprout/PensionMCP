@@ -25,10 +25,10 @@ namespace TestPensionMCP.Engine
         [TestCase("2004-02-29", 20, "2024-02-29")]
         public void GetDateTurnsAge_ReturnsCorrectDate(string dateOfBirth, int age, string expectedDate)
         {
-            DateTime result = AgeCalculator.GetDateTurnsAge(ParseDate(dateOfBirth), age);
+            DateOnly result = AgeCalculator.GetDateTurnsAge(ParseDate(dateOfBirth), age);
             Assert.That(result, Is.EqualTo(ParseDate(expectedDate)));
         }
 
-        private static DateTime ParseDate(string s) => DateTime.Parse(s, CultureInfo.InvariantCulture);
+        private static DateOnly ParseDate(string s) => DateOnly.Parse(s, CultureInfo.InvariantCulture);
     }
 }

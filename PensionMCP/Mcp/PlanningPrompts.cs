@@ -5,7 +5,7 @@ using System.ComponentModel;
 namespace PensionMCP.Mcp
 {
     [McpServerPromptType]
-    public static class PlanningPrompts
+    public class PlanningPrompts : BaseTool
     {
         [McpServerPrompt(Title = "Initiate planning session", Name = "Planning Session")]
         [Description("Sets up a pension planning session for the users client")]
@@ -24,6 +24,10 @@ namespace PensionMCP.Mcp
                 Important:
                 1: Always use professional language when responding.
                 2: Always base calculations on data retrieved from the tools, resources or provided by the accountant, Not on assumptions.
+                3: Watch for opportunities to ADD new clients if the client does not already exist using the PensionMCP tools.
+                4: AFTER adding a new client you should prompt the user to add the other data, NetRelevantIncome, Current Pension Pot Value etc..
+                5: Watch for opportunities to UPDATE existing clients data using the PensionMCP tools.
+                6: a -1 is a default value indicating that the value has NOT been set by the user and therefore should not be used. You as the agent should request the value from the user.
                 """);
 
             // TODO: add a taxonomy ?

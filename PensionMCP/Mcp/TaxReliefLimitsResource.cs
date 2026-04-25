@@ -1,7 +1,6 @@
 ﻿using ModelContextProtocol.Server;
 using PensionMCP.Rules;
 using System.ComponentModel;
-using System.Text.Json;
 
 namespace PensionMCP.Mcp
 {
@@ -9,7 +8,7 @@ namespace PensionMCP.Mcp
     /// Resour
     /// </summary>
     [McpServerResourceType]
-    public static class TaxReliefLimitsResource
+    public class TaxReliefLimitsResource : BaseTool
     {
         /// <summary>
         /// Returns the Revenue age-based pension contribution relief limits
@@ -20,8 +19,7 @@ namespace PensionMCP.Mcp
         public static string GetTaxReliefLimits()
         {
             // TODO: Look at a better text format than JSON for this data, Human readable would be nice as its a resource.
-            return JsonSerializer.Serialize(TaxReliefLimits.ContributionLimits,
-                new JsonSerializerOptions { WriteIndented = true });
+            return ToJson(TaxReliefLimits.ContributionLimits);
         }
     }
 }

@@ -8,7 +8,7 @@
         /// <param name="dateOfBirth">Persons date of birth</param>
         /// <param name="asOfDate">The date on which to determine the persons age</param>
         /// <returns>Persons age on a particular date</returns>
-        public static int GetAgeAsOfDate(DateTime dateOfBirth, DateTime asOfDate)
+        public static int GetAgeAsOfDate(DateOnly dateOfBirth, DateOnly asOfDate)
         {
             int age = asOfDate.Year - dateOfBirth.Year;
 
@@ -24,7 +24,7 @@
         /// <param name="dateOfBirth">Persons date of birth</param>
         /// <param name="targetAge">The age that we want to know when the person reaches </param>
         /// <returns>Date person turns given age</returns>
-        public static DateTime GetDateTurnsAge(DateTime dateOfBirth, int targetAge)
+        public static DateOnly GetDateTurnsAge(DateOnly dateOfBirth, int targetAge)
         {
             return dateOfBirth.AddYears(targetAge);
         }
