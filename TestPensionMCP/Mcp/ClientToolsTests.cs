@@ -45,6 +45,20 @@ namespace TestPensionMCP.Mcp
             Assert.That(clients, Has.Count.EqualTo(3));
         }
 
+        [TestCase("Kirk", 1)]   
+        [TestCase("KIRK", 1)]
+        [TestCase("o", 2)]      
+        [TestCase("Khan", 0)]    
+        public async Task SearchClients_ReturnsExpectedCount(string searchTerm, int expectedCount)
+        {
+            var tool = new ClientTools(_context);
+
+            var json = await tool.SearchClients(searchTerm);
+            var clients = JsonSerializer.Deserialize<List<object>>(json);
+
+            Assert.That(clients, Has.Count.EqualTo(expectedCount));
+        }
+
         [Test]
         public async Task AddClient_ReturnsClientJson()
         {
@@ -126,6 +140,41 @@ namespace TestPensionMCP.Mcp
                 await tool.AddClient("   ", "1970-07-07");
             });
             Assert.That(ex.Message, Does.Contain("name"));
+        }
+
+        [Test]
+        public async Task DeleteClient_RemovesClientFromDatabase()
+        {
+            var tool = new ClientTools(_context);
+
+            await tool.DeleteClient(1); 
+
+            var dbClient = await _context.Clients.FindAsync(1);
+            Assert.That(dbClient, Is.Null);
+        }
+
+        [Test]
+        public async Task DeleteClient_ReturnsDeletedClientJson()
+        {
+            var tool = new ClientTools(_context);
+
+            var json = await tool.DeleteClient(1); 
+            var deleted = JsonSerializer.Deserialize<JsonElement>(json);
+
+            Assert.That(deleted.GetProperty("Id").GetInt32(), Is.EqualTo(1));
+            Assert.That(deleted.GetProperty("Name").GetString(), Is.EqualTo("James Kirk"));
+        }
+
+        [Test]
+        public void DeleteClient_InvalidId_ThrowsMcpException()
+        {
+            var tool = new ClientTools(_context);
+
+            var ex = Assert.ThrowsAsync<McpException>(async () =>
+            {
+                await tool.DeleteClient(9999);
+            });
+            Assert.That(ex.Message, Does.Contain("9999"));
         }
     }
 }

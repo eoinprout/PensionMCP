@@ -20,6 +20,18 @@ namespace PensionMCP.Mcp
             return ToJson(clients);
         }
 
+        [McpServerTool(Title = "Search Clients", Destructive = false, ReadOnly = true, Idempotent = true, OpenWorld = false)]
+        [Description("Searches for client records where the name contains the given search term. Returns matching clients as JSON.")]
+        public async Task<string> SearchClients(string name)
+        {
+            CheckRequired(name, "name");
+            var search = name.ToLower();
+            var clients = await context.Clients
+                .Where(c => c.Name.ToLower().Contains(search))
+                .ToListAsync();
+            return ToJson(clients);
+        }
+
         [McpServerTool(Title = "Client Exists", Destructive = false, ReadOnly = true, Idempotent = true, OpenWorld = false)]
         [Description("Checks if a client with the given name and date of birth exists. Returns true or false. dateOfBirth format: yyyy-MM-dd.")]
         public async Task<bool> ClientExists(string name, string dateOfBirth)
@@ -46,6 +58,29 @@ namespace PensionMCP.Mcp
             };
 
             context.Clients.Add(client);
+            await context.SaveChangesAsync();
+
+            return ToJson(client);
+        }
+
+        /// <summary>
+        /// Deletes a client record
+        /// </summary>
+        /// <param name="id">The clients id</param>
+        /// <returns>A JSON string representing the clients details</returns>
+        /// <exception cref="McpException"></exception>
+        /// <remarks>By returning the deleted client as JSON to the agent, it may allow the agent to undo the delete
+        /// is nessacary as it will have all the clients details</remarks>
+        [McpServerTool(Title = "Delete Client", Destructive = true, ReadOnly = false, Idempotent = false, OpenWorld = false)]
+        [Description("Permanently deletes a client record by their Id. Returns the deleted client as JSON. Use Search Clients to find the Id first. Ask the user to confirm before deleting the record")]
+        public async Task<string> DeleteClient(int id)
+        {
+            var client = await context.Clients.FindAsync(id);
+
+            if (client == null)
+                throw new McpException($"No client found with Id {id}.");
+
+            context.Clients.Remove(client);
             await context.SaveChangesAsync();
 
             return ToJson(client);
