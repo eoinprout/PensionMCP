@@ -19,12 +19,7 @@ namespace PensionMCP.Mcp
         [Description("Returns the current age of someone on a particular day based on their date of birth (date format: yyyy-MM-dd)")]
         public static string GetAgeAsOfDate(string dateOfBirth, string asOfDate)
         {
-            //if (!DateTime.TryParse(dateOfBirth, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dob))
-            //    throw new McpException("Invalid date of birth format. Please use yyyy-MM-dd.");
             DateOnly dob = ParseDateParam(dateOfBirth, "dateOfBirth");
-
-            //if (!DateTime.TryParse(asOfDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime asOf))
-            //    throw new McpException("Invalid as of date format. Please use yyyy-MM-dd.");
             DateOnly asOf = ParseDateParam(asOfDate, "asOf");
 
             int age = AgeCalculator.GetAgeAsOfDate(dob, asOf);
@@ -54,8 +49,6 @@ namespace PensionMCP.Mcp
         [Description("Returns the date on which a person turns a given age, based on their date of birth (date format: yyyy-MM-dd)")]
         public static string GetDateTurnsAge(string dateOfBirth, int targetAge)
         {
-            //if (!DateTime.TryParse(dateOfBirth, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dob))
-            //    throw new McpException("Invalid date of birth format. Please use yyyy-MM-dd.");
             DateOnly dob = ParseDateParam(dateOfBirth, "asOf");
 
             DateOnly result = AgeCalculator.GetDateTurnsAge(dob, targetAge);

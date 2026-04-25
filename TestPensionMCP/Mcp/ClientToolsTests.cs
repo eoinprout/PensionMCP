@@ -45,10 +45,10 @@ namespace TestPensionMCP.Mcp
             Assert.That(clients, Has.Count.EqualTo(3));
         }
 
-        [TestCase("Kirk", 1)]   
+        [TestCase("Kirk", 1)]
         [TestCase("KIRK", 1)]
-        [TestCase("o", 2)]      
-        [TestCase("Khan", 0)]    
+        [TestCase("o", 2)]
+        [TestCase("Khan", 0)]
         public async Task SearchClients_ReturnsExpectedCount(string searchTerm, int expectedCount)
         {
             var tool = new ClientTools(_context);
@@ -147,7 +147,7 @@ namespace TestPensionMCP.Mcp
         {
             var tool = new ClientTools(_context);
 
-            await tool.DeleteClient(1); 
+            await tool.DeleteClient(1);
 
             var dbClient = await _context.Clients.FindAsync(1);
             Assert.That(dbClient, Is.Null);
@@ -158,7 +158,7 @@ namespace TestPensionMCP.Mcp
         {
             var tool = new ClientTools(_context);
 
-            var json = await tool.DeleteClient(1); 
+            var json = await tool.DeleteClient(1);
             var deleted = JsonSerializer.Deserialize<JsonElement>(json);
 
             Assert.That(deleted.GetProperty("Id").GetInt32(), Is.EqualTo(1));
@@ -175,6 +175,85 @@ namespace TestPensionMCP.Mcp
                 await tool.DeleteClient(9999);
             });
             Assert.That(ex.Message, Does.Contain("9999"));
+        }
+
+        [Test]
+        public async Task UpdateClientName_UpdatesName()
+        {
+            var tool = new ClientTools(_context);
+
+            await tool.UpdateClientName(1, "James T. Kirk");
+
+            var dbClient = await _context.Clients.FindAsync(1);
+            Assert.That(dbClient, Is.Not.Null);
+            Assert.That(dbClient.Name, Is.EqualTo("James T. Kirk"));
+        }
+
+        [Test]
+        public void UpdateClientName_InvalidId_ThrowsMcpException()
+        {
+            var tool = new ClientTools(_context);
+
+            Assert.ThrowsAsync<McpException>(async () =>
+            {
+                await tool.UpdateClientName(3000, "James T. Kirk");
+            });
+        }
+
+        [Test]
+        public void UpdateClientName_BlankName_ThrowsMcpException()
+        {
+            var tool = new ClientTools(_context);
+
+            Assert.ThrowsAsync<McpException>(async () =>
+            {
+                await tool.UpdateClientName(1, "");
+            });
+        }
+
+        [Test]
+        public async Task UpdateClientDateOfBirth_UpdatesDateOfBirth()
+        {
+            var tool = new ClientTools(_context);
+
+            var json = await tool.UpdateClientDateOfBirth(1, "1974-12-25");
+            var client = JsonSerializer.Deserialize<JsonElement>(json);
+
+            Assert.That(client.GetProperty("DateOfBirth").GetString(), Is.EqualTo("1974-12-25"));
+        }
+
+        [Test]
+        public void UpdateClientDateOfBirth_InvalidFormat_ThrowsMcpException()
+        {
+            var tool = new ClientTools(_context);
+
+            var ex = Assert.ThrowsAsync<McpException>(async () =>
+            {
+                await tool.UpdateClientDateOfBirth(1, "25/12/1974");
+            });
+            Assert.That(ex.Message, Does.Contain("dateOfBirth"));
+        }
+
+        [Test]
+        public async Task UpdateClientNetRelevantIncome_UpdatesIncome()
+        {
+            var tool = new ClientTools(_context);
+
+            var json = await tool.UpdateClientNetRelevantIncome(1, 55000m);
+            var client = JsonSerializer.Deserialize<JsonElement>(json);
+
+            Assert.That(client.GetProperty("NetRelevantIncome").GetDecimal(), Is.EqualTo(55000m));
+        }
+
+        [Test]
+        public void UpdateClientNetRelevantIncome_ThrowsMcpException()
+        {
+            var tool = new ClientTools(_context);
+
+            Assert.ThrowsAsync<McpException>(async () =>
+            {
+                await tool.UpdateClientNetRelevantIncome(100, 55000m);
+            });
         }
     }
 }

@@ -75,15 +75,60 @@ namespace PensionMCP.Mcp
         [Description("Permanently deletes a client record by their Id. Returns the deleted client as JSON. Use Search Clients to find the Id first. Ask the user to confirm before deleting the record")]
         public async Task<string> DeleteClient(int id)
         {
-            var client = await context.Clients.FindAsync(id);
-
-            if (client == null)
-                throw new McpException($"No client found with Id {id}.");
+            var client = await FindClientAsync(id);
 
             context.Clients.Remove(client);
             await context.SaveChangesAsync();
 
             return ToJson(client);
+        }
+
+        [McpServerTool(Title = "Update Clients Name", Destructive = false, ReadOnly = false, Idempotent = false, OpenWorld = false)]
+        [Description("Updates the name of an existing client record. Returns the updated client as JSON.")]
+        public async Task<string> UpdateClientName(int id, string name)
+        {
+            CheckRequired(name, "name");
+
+            var client = await FindClientAsync(id);
+
+            client.Name = name;
+            await context.SaveChangesAsync();
+
+            return ToJson(client);
+        }
+
+        [McpServerTool(Title = "Update clients date of birth", Destructive = false, ReadOnly = false, Idempotent = false, OpenWorld = false)]
+        [Description("Updates the date of birth of an existing client record. Returns the updated client as JSON. dateOfBirth format: yyyy-MM-dd.")]
+        public async Task<string> UpdateClientDateOfBirth(int id, string dateOfBirth)
+        {
+            DateOnly dob = ParseDateParam(dateOfBirth, "dateOfBirth");
+
+            var client = await FindClientAsync(id);
+
+            client.DateOfBirth = dob;
+            await context.SaveChangesAsync();
+
+            return ToJson(client);
+        }
+
+        [McpServerTool(Title = "Update clients net relevant income", Destructive = false, ReadOnly = false, Idempotent = false, OpenWorld = false)]
+        [Description("Updates the net relevant income of an existing client record. Returns the updated client as JSON.")]
+        public async Task<string> UpdateClientNetRelevantIncome(int id, decimal netRelevantIncome)
+        {
+            var client = await FindClientAsync(id);
+
+            client.NetRelevantIncome = netRelevantIncome;
+            await context.SaveChangesAsync();
+
+            return ToJson(client);
+        }
+
+        private async Task<Client> FindClientAsync(int id)
+        {
+            var client = await context.Clients.FindAsync(id);
+            if (client == null)
+                throw new McpException($"Client with Id {id} was not found.");
+            return client;
         }
     }
 }
