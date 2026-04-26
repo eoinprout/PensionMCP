@@ -5,7 +5,7 @@ using System.Text.Json;
 namespace TestPensionMCP.Mcp
 {
     [TestFixture]
-    public class TaxReliefLimitsToolsTests
+    internal sealed class TaxReliefLimitsToolsTests
     {
         [Test]
         public void GetTaxReliefLimits_ReturnsExpectedReliefBands()

@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace TestPensionMCP.Mcp
 {
-    public class ClientToolsTests
+    internal sealed class ClientToolsTests
     {
         private SqliteConnection _connection;
         private PensionDbContext _context;
@@ -253,6 +253,78 @@ namespace TestPensionMCP.Mcp
             Assert.ThrowsAsync<McpException>(async () =>
             {
                 await tool.UpdateClientNetRelevantIncome(100, 55000m);
+            });
+        }
+
+        [Test]
+        public async Task UpdateClientIsMarried_UpdatesMaritalStatus()
+        {
+            var tool = new ClientTools(_context);
+            var json = await tool.UpdateClientIsMarried(1, true);
+            var client = JsonSerializer.Deserialize<JsonElement>(json);
+            Assert.That(client.GetProperty("IsMarried").GetBoolean(), Is.True);
+
+            json = await tool.UpdateClientIsMarried(1, false);
+            client = JsonSerializer.Deserialize<JsonElement>(json);
+            Assert.That(client.GetProperty("IsMarried").GetBoolean(), Is.False);
+        }
+
+        [Test]
+        public async Task UpdateClientIsMarried_WhenClientIsQualifyingSingleParent_ThrowsMcpException()
+        {
+            var tool = new ClientTools(_context);
+            await tool.UpdateClientIsQualifyingSingleParent(1, true);
+
+            Assert.ThrowsAsync<McpException>(async () =>
+            {
+                await tool.UpdateClientIsMarried(1, true);
+            });
+        }
+
+        [Test]
+        public async Task UpdateClientSpouseIncome_UpdatesSpouseIncome()
+        {
+            var tool = new ClientTools(_context);
+            decimal newIncome = 12345.67m;
+            var json = await tool.UpdateClientSpouseIncome(1, newIncome);
+            var client = JsonSerializer.Deserialize<JsonElement>(json);
+            Assert.That(client.GetProperty("SpouseIncome").GetDecimal(), Is.EqualTo(newIncome));
+        }
+
+        [Test]
+        public async Task UpdateClientIsQualifyingSingleParent_UpdatesStatus()
+        {
+            var tool = new ClientTools(_context);
+
+            var json = await tool.UpdateClientIsQualifyingSingleParent(1, true);
+            var client = JsonSerializer.Deserialize<JsonElement>(json);
+            Assert.That(client.GetProperty("IsQualifyingSingleParent").GetBoolean(), Is.True);
+
+            json = await tool.UpdateClientIsQualifyingSingleParent(1, false);
+            client = JsonSerializer.Deserialize<JsonElement>(json);
+            Assert.That(client.GetProperty("IsQualifyingSingleParent").GetBoolean(), Is.False);
+        }
+
+        [Test]
+        public async Task UpdateClientIsQualifyingSingleParent_WhenClientIsMarried_ThrowsMcpException()
+        {
+            var tool = new ClientTools(_context);
+            await tool.UpdateClientIsMarried(1, true);
+
+            Assert.ThrowsAsync<McpException>(async () =>
+            {
+                await tool.UpdateClientIsQualifyingSingleParent(1, true);
+            });
+        }
+
+        [Test]
+        public void UpdateClientIsQualifyingSingleParent_InvalidId_ThrowsMcpException()
+        {
+            var tool = new ClientTools(_context);
+
+            Assert.ThrowsAsync<McpException>(async () =>
+            {
+                await tool.UpdateClientIsQualifyingSingleParent(9999, true);
             });
         }
     }

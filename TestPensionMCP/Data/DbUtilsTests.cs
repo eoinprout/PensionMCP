@@ -9,7 +9,7 @@ namespace TestPensionMCP.Data
     // which transparently redirects LocalApplicationData writes to its sandboxed package folder:
     // C:\Users\<user>\AppData\Local\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Local\
     [TestFixture]
-    public class DbUtilsTests
+    internal sealed class DbUtilsTests
     {
         [Test]
         public void BuildConnectionString_ShouldReturnValidConnectionString()

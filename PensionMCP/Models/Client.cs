@@ -11,7 +11,9 @@ namespace PensionMCP.Models
         public decimal CurrentPensionPotValue { get; set; } = Constants.AmountNotSet;
         public decimal CurrentMonthlyPensionContribution { get; set; } = Constants.AmountNotSet;
         public decimal CurrentMonthlyEmployersContribution { get; set; } = Constants.AmountNotSet;
-
+        public bool IsMarried { get; set; }
+        public decimal SpouseIncome { get; set; } = Constants.AmountNotSet;
+        public bool IsQualifyingSingleParent { get; set; }
     }
 }
 

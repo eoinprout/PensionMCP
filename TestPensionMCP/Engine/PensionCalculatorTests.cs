@@ -2,7 +2,7 @@
 
 namespace TestPensionMCP.Engine
 {
-    public class PensionCalculatorTests
+    internal sealed class PensionCalculatorTests
     {
 
         [TestCase(0, 60000, 9000)]
@@ -31,7 +31,7 @@ namespace TestPensionMCP.Engine
         [Test]
         public void GetMaxContribution_NegativeAge_ThrowsArgumentOutOfRangeException()
         {
-            Assert.That(() => PensionCalculator.GetMaxContribution(-1, 60_000),
+            Assert.That(() => PensionCalculator.GetMaxContribution(-1, 60000),
                 Throws.TypeOf<ArgumentOutOfRangeException>()
                       .With.Property("ParamName").EqualTo("age"));
         }
@@ -84,9 +84,69 @@ namespace TestPensionMCP.Engine
         [Test]
         public void CheckAnnualAllowance_NegativeAge_ThrowsArgumentOutOfRangeException()
         {
-            Assert.That(() => PensionCalculator.CheckAnnualAllowance(-1, 60_000, 1000),
+            Assert.That(() => PensionCalculator.CheckAnnualAllowance(-1, 60000, 1000),
                 Throws.TypeOf<ArgumentOutOfRangeException>()
                       .With.Property("ParamName").EqualTo("age"));
+        }
+
+
+        [TestCase(25, 30000, 300, false, 0, 20, 720)]
+        [TestCase(45, 50000, 1000, false, 0, 40, 4800)]
+        [TestCase(45, 50000, 2000, false, 0, 40, 5000)]
+        [TestCase(52, 60000, 1000, true, 20000, 20, 2400)]
+        [TestCase(52, 60000, 1000, true, 0, 40, 4800)]
+        public void CalculateTaxRelief_ReturnsCorrectResult(
+            int age, decimal earnings, decimal monthlyContribution, bool isMarried, decimal spouseIncome,
+            decimal expectedRate, decimal expectedRelief)
+        {
+            var result = PensionCalculator.CalculateTaxRelief(age, earnings, monthlyContribution, isMarried, spouseIncome, false);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.MarginalRate, Is.EqualTo(expectedRate));
+                Assert.That(result.TaxRelief, Is.EqualTo(expectedRelief));
+            });
+        }
+
+        [Test]
+        public void CalculateTaxRelief_QualifyingSingleParent_ReturnsCorrectResult()
+        {
+            var result = PensionCalculator.CalculateTaxRelief(45, 50000, 2000, false, 0m, true);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.MarginalRate, Is.EqualTo(40m));
+                Assert.That(result.TaxRelief, Is.EqualTo(5000m));
+            });
+        }
+
+        [Test]
+        public void CalculateTaxRelief_NegativeAge_ThrowsArgumentOutOfRangeException()
+        {
+            Assert.That(() => PensionCalculator.CalculateTaxRelief(-1, 60000, 1000, false, 0m, false),
+                Throws.TypeOf<ArgumentOutOfRangeException>()
+                      .With.Property("ParamName").EqualTo("age"));
+        }
+
+        [Test]
+        public void CalculateTaxRelief_BothMarriedAndQualifyingSingleParent_ThrowsArgumentException()
+        {
+            Assert.That(() => PensionCalculator.CalculateTaxRelief(45, 50000, 1000, true, 20000m, true),
+                Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void CalculateTaxRelief_QualifyingSingleParent_BelowCutOff_UsesStandardRate()
+        {
+            var result = PensionCalculator.CalculateTaxRelief(25, 44000, 300, false, 0m, true);
+
+            Assert.That(result.MarginalRate, Is.EqualTo(20m));
+        }
+
+        [Test]
+        public void CalculateTaxRelief_QualifyingSingleParent_AboveCutOff_UsesHigherRate()
+        {
+            var result = PensionCalculator.CalculateTaxRelief(25, 50000, 300, false, 0m, true);
+
+            Assert.That(result.MarginalRate, Is.EqualTo(40m));
         }
     }
 }

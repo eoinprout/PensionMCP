@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace TestPensionMCP.Engine
 {
-    public class AgeCalculatorTests
+    internal sealed class AgeCalculatorTests
     {
         [TestCase("1974-12-12", "2026-04-18", 51)]
         [TestCase("1974-12-12", "2026-12-11", 51)]

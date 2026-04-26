@@ -123,6 +123,40 @@ namespace PensionMCP.Mcp
             return ToJson(client);
         }
 
+        [McpServerTool(Title = "Update clients marital status", Destructive = false, ReadOnly = false, Idempotent = false, OpenWorld = false)]
+        [Description("Updates the marital status of an existing client record. Returns the updated client as JSON.")]
+        public async Task<string> UpdateClientIsMarried(int id, bool isMarried)
+        {
+            var client = await FindClientAsync(id);
+            if (isMarried && client.IsQualifyingSingleParent)
+                throw new McpException("A client cannot be both married and a qualifying single parent.");
+            client.IsMarried = isMarried;
+            await context.SaveChangesAsync();
+            return ToJson(client);
+        }
+
+        [McpServerTool(Title = "Update clients spouse income", Destructive = false, ReadOnly = false, Idempotent = false, OpenWorld = false)]
+        [Description("Updates the spouse income of an existing client record. Returns the updated client as JSON.")]
+        public async Task<string> UpdateClientSpouseIncome(int id, decimal spouseIncome)
+        {
+            var client = await FindClientAsync(id);
+            client.SpouseIncome = spouseIncome;
+            await context.SaveChangesAsync();
+            return ToJson(client);
+        }
+
+        [McpServerTool(Title = "Update clients qualifying single parent status", Destructive = false, ReadOnly = false, Idempotent = false, OpenWorld = false)]
+        [Description("Updates whether an existing client qualifies for the Single Person Child Carer Credit. Returns the updated client as JSON.")]
+        public async Task<string> UpdateClientIsQualifyingSingleParent(int id, bool isQualifyingSingleParent)
+        {
+            var client = await FindClientAsync(id);
+            if (isQualifyingSingleParent && client.IsMarried)
+                throw new McpException("A client cannot be both married and a qualifying single parent.");
+            client.IsQualifyingSingleParent = isQualifyingSingleParent;
+            await context.SaveChangesAsync();
+            return ToJson(client);
+        }
+
         private async Task<Client> FindClientAsync(int id)
         {
             var client = await context.Clients.FindAsync(id);

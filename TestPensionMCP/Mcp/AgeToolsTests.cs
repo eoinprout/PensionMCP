@@ -3,7 +3,7 @@ using PensionMCP.Mcp;
 
 namespace TestPensionMCP.Mcp
 {
-    public class AgeToolsTests
+    internal sealed class AgeToolsTests
     {
         [Test]
         public void GetAgeAsOfDate_InvalidDateOfBirth_ThrowsMcpException()

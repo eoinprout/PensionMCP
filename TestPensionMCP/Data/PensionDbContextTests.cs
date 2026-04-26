@@ -4,7 +4,7 @@ using PensionMCP.Data;
 
 namespace TestPensionMCP.Data
 {
-    public class PensionDbContextTests
+    internal sealed class PensionDbContextTests
     {
         private SqliteConnection _connection;
         private PensionDbContext _context;

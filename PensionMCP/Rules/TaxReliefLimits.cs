@@ -16,7 +16,7 @@
         /// <summary>
         /// Maximum earnings that qualify for pension tax relief
         /// </summary>
-        public const decimal EarningsCap = 115_000m;
+        public const decimal EarningsCap = 115000m;
 
         /// <summary>
         /// Contribution tax relief limits table

@@ -32,7 +32,9 @@ namespace PensionMCP.Data
                     Name = "Nyota Uhura",
                     DateOfBirth = new DateOnly(1982, 7, 25),
                     NetRelevantIncome = 45000m,
-                    CurrentPensionPotValue = -1m
+                    CurrentPensionPotValue = -1m,
+                    IsMarried = true,
+                    SpouseIncome = 30000m
                 },
                 new Client
                 {

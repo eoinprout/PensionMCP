@@ -1,4 +1,5 @@
-﻿using ModelContextProtocol.Server;
+﻿using ModelContextProtocol;
+using ModelContextProtocol.Server;
 using PensionMCP.Engine;
 using System.ComponentModel;
 
@@ -33,6 +34,21 @@ namespace PensionMCP.Mcp
                 Annual contributions: {result.AnnualContributions}
                 Maximum allowance: {result.MaxAllowance}
                 Status: {status}
+                """;
+        }
+        [McpServerTool(Title = "Calculate Tax Relief", Destructive = false, ReadOnly = true, Idempotent = true, OpenWorld = false)]
+        [Description("Calculates the annual pension tax relief for a client based on their income tax band. monthlyContribution is the client's own monthly contribution only, not including employer contributions. Relief is capped at the maximum allowable contribution for the client's age and earnings.")]
+        public static string CalculateTaxRelief(int age, decimal earnings, decimal monthlyContribution, bool isMarried, decimal spouseIncome, bool isQualifyingSingleParent)
+        {
+            if (isMarried && isQualifyingSingleParent)
+                throw new McpException("A client cannot be both married and a qualifying single parent.");
+
+            var result = PensionCalculator.CalculateTaxRelief(age, earnings, monthlyContribution, isMarried, spouseIncome, isQualifyingSingleParent);
+            return $"""
+                Annual contributions: {result.AnnualContributions}
+                Eligible contributions: {result.EligibleContributions}
+                Marginal tax rate: {result.MarginalRate}%
+                Tax relief: {result.TaxRelief}
                 """;
         }
     }

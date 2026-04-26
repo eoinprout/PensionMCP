@@ -22,7 +22,7 @@ namespace TestPensionMCP.Mcp
         }
     }
 
-    internal class BaseToolTests
+    internal sealed class BaseToolTests
     {
 
         [Test]
