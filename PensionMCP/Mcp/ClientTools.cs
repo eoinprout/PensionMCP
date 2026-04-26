@@ -36,7 +36,7 @@ namespace PensionMCP.Mcp
         [Description("Checks if a client with the given name and date of birth exists. Returns true or false. dateOfBirth format: yyyy-MM-dd.")]
         public async Task<bool> ClientExists(string name, string dateOfBirth)
         {
-            DateOnly dob = ParseDateParam(dateOfBirth, "dateOfBirth");
+            DateOnly dob = ParseDateParam(dateOfBirth, nameof(dateOfBirth));
             return await context.Clients.AnyAsync(c => c.Name == name && c.DateOfBirth == dob);
         }
 
@@ -45,7 +45,7 @@ namespace PensionMCP.Mcp
         public async Task<string> AddClient(string name, string dateOfBirth)
         {
             CheckRequired(name, "name");
-            DateOnly dob = ParseDateParam(dateOfBirth, "dateOfBirth");
+            DateOnly dob = ParseDateParam(dateOfBirth, nameof(dateOfBirth));
 
             if (await ClientExists(name, dateOfBirth))
                 throw new McpException($"A client with name '{name}' and date of birth '{dateOfBirth}' already exists. If this is a new client the try adding the clients initial to differentiate them.");
@@ -101,7 +101,7 @@ namespace PensionMCP.Mcp
         [Description("Updates the date of birth of an existing client record. Returns the updated client as JSON. dateOfBirth format: yyyy-MM-dd.")]
         public async Task<string> UpdateClientDateOfBirth(int id, string dateOfBirth)
         {
-            DateOnly dob = ParseDateParam(dateOfBirth, "dateOfBirth");
+            DateOnly dob = ParseDateParam(dateOfBirth, nameof(dateOfBirth));
 
             var client = await FindClientAsync(id);
 
