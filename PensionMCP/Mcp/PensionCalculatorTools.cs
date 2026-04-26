@@ -20,5 +20,20 @@ namespace PensionMCP.Mcp
                 Relief band: {band.ReliefPercent}%
                 """;
         }
+
+        [McpServerTool(Title = "Check Annual Allowance", Destructive = false, ReadOnly = true, Idempotent = true, OpenWorld = false)]
+        [Description("Checks whether a client's annual pension contributions exceed the maximum eligible for tax relief. monthlyContribution is the client's own monthly contribution only, not including employer contributions.")]
+        public static string CheckAnnualAllowance(int age, decimal earnings, decimal monthlyContribution)
+        {
+            var result = PensionCalculator.CheckAnnualAllowance(age, earnings, monthlyContribution);
+            var status = result.ExceedsAllowance
+                ? $"EXCEEDS allowance by: {result.Overage}"
+                : $"Within allowance. Headroom: {result.Headroom}";
+            return $"""
+                Annual contributions: {result.AnnualContributions}
+                Maximum allowance: {result.MaxAllowance}
+                Status: {status}
+                """;
+        }
     }
 }

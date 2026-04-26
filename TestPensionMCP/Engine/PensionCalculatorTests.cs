@@ -62,5 +62,31 @@ namespace TestPensionMCP.Engine
             var band = PensionCalculator.GetAgeBand(age);
             Assert.That(band.ReliefPercent, Is.EqualTo(expectedPercent));
         }
+
+        [TestCase(25, 60000, 700, false, 600, 0)]
+        [TestCase(35, 60000, 1100, true, 0, 1200)]
+        [TestCase(45, 60000, 1250, false, 0, 0)]
+        [TestCase(52, 60000, 1000, false, 6000, 0)]
+        [TestCase(57, 200000, 3500, true, 0, 1750)]
+        [TestCase(62, 60000, 0, false, 24000, 0)]
+        public void CheckAnnualAllowance_ReturnsCorrectResult(
+            int age, decimal earnings, decimal monthlyContribution, bool expectedExceeds, decimal expectedHeadroom, decimal expectedOverage)
+        {
+            var result = PensionCalculator.CheckAnnualAllowance(age, earnings, monthlyContribution);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.ExceedsAllowance, Is.EqualTo(expectedExceeds));
+                Assert.That(result.Headroom, Is.EqualTo(expectedHeadroom));
+                Assert.That(result.Overage, Is.EqualTo(expectedOverage));
+            });
+        }
+
+        [Test]
+        public void CheckAnnualAllowance_NegativeAge_ThrowsArgumentOutOfRangeException()
+        {
+            Assert.That(() => PensionCalculator.CheckAnnualAllowance(-1, 60_000, 1000),
+                Throws.TypeOf<ArgumentOutOfRangeException>()
+                      .With.Property("ParamName").EqualTo("age"));
+        }
     }
 }

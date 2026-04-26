@@ -29,9 +29,29 @@ namespace PensionMCP.Engine
         public static TaxReliefLimit GetAgeBand(int age)
         {
             CheckAge(age);
-                
+
             return TaxReliefLimits.ContributionLimits
                 .First(l => age >= l.AgeFrom && age <= l.AgeTo);
+        }
+
+        /// <summary>
+        /// CALC002: Annual Allowance Check
+        /// </summary>
+        /// <param name="age"></param>
+        /// <param name="earnings"></param>
+        /// <param name="monthlyContribution"></param>
+        /// <returns></returns>
+        public static AnnualAllowanceResult CheckAnnualAllowance(int age, decimal earnings, decimal monthlyContribution)
+        {
+            CheckAge(age);
+
+            var maxAllowance = GetMaxContribution(age, earnings);
+            var annualContributions = monthlyContribution * 12;
+            var exceedsAllowance = annualContributions > maxAllowance;
+            var overage = exceedsAllowance ? annualContributions - maxAllowance : 0m;
+            var headroom = exceedsAllowance ? 0m : maxAllowance - annualContributions;
+
+            return new AnnualAllowanceResult(annualContributions, maxAllowance, exceedsAllowance, overage, headroom);
         }
 
         private static void CheckAge(int age)
