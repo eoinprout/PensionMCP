@@ -76,6 +76,29 @@ namespace PensionMCP.Engine
             return new TaxReliefResult(annualContributions, eligibleContributions, marginalRate, taxRelief);
         }
 
+        /// <summary>
+        /// CALC004: Unused Tax Relief Calculation
+        /// </summary>
+        /// <param name="age"></param>
+        /// <param name="earnings"></param>
+        /// <param name="monthlyContribution"></param>
+        /// <param name="isMarried"></param>
+        /// <param name="spouseIncome"></param>
+        /// <param name="isQualifyingSingleParent"></param>
+        /// <returns></returns>
+        public static UnusedTaxReliefResult CalculateUnusedTaxRelief(int age, decimal earnings, decimal monthlyContribution, bool isMarried, decimal spouseIncome, bool isQualifyingSingleParent)
+        {
+            CheckAge(age);
+
+            var annualContributions = monthlyContribution * 12;
+            var maxAllowable = GetMaxContribution(age, earnings);
+            var unusedRoom = Math.Max(maxAllowable - annualContributions, 0m);
+            var marginalRate = IrishIncomeTaxRates.GetMarginalRate(earnings, isMarried, spouseIncome, isQualifyingSingleParent);
+            var unusedTaxRelief = unusedRoom * marginalRate / 100m;
+
+            return new UnusedTaxReliefResult(maxAllowable, annualContributions, unusedRoom, marginalRate, unusedTaxRelief);
+        }
+
         private static void CheckAge(int age)
         {
             if (age < 0)

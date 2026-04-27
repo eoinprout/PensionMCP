@@ -95,6 +95,16 @@ namespace TestPensionMCP.Engine
         [TestCase(45, 50000, 2000, false, 0, 40, 5000)]
         [TestCase(52, 60000, 1000, true, 20000, 20, 2400)]
         [TestCase(52, 60000, 1000, true, 0, 40, 4800)]
+
+        // As the spouses incomes increases, the lower rate threshold increases
+        // meaning that at one point the couple will lose higher rate relief
+        // on pension contributions.
+        [TestCase(60, 60000, 500, true, 20000, 20, 1200)]
+        [TestCase(60, 60000, 500, true, 0, 40, 2400)]
+        [TestCase(60, 60000, 500, true, 6999, 40, 2400)]
+        [TestCase(60, 60000, 500, true, 7000, 20, 1200)]
+        [TestCase(60, 60000, 500, true, 7001, 20, 1200)]
+        [TestCase(60, 60000, 500, false, 0, 40, 2400)]
         public void CalculateTaxRelief_ReturnsCorrectResult(
             int age, decimal earnings, decimal monthlyContribution, bool isMarried, decimal spouseIncome,
             decimal expectedRate, decimal expectedRelief)
@@ -147,6 +157,60 @@ namespace TestPensionMCP.Engine
             var result = PensionCalculator.CalculateTaxRelief(25, 50000, 300, false, 0m, true);
 
             Assert.That(result.MarginalRate, Is.EqualTo(40m));
+        }
+
+        [TestCase(29, 50000, 500, false, 0, 1500, 600)]
+        [TestCase(35, 50000, 500, false, 0, 4000, 1600)]
+        [TestCase(45, 50000, 500, false, 0, 6500, 2600)]
+        [TestCase(45, 50000, 1000, false, 0, 500, 200)]
+        [TestCase(52, 60000, 500, true, 20000, 12000, 2400)]
+        [TestCase(57, 50000, 500, false, 0, 11500, 4600)]
+        [TestCase(60, 60000, 500, false, 0, 18000, 7200)]
+        [TestCase(60, 60000, 500, true, 20000, 18000, 3600)]
+
+        // Weird edge cases where spouse income increasing 
+        // increases lower rate threshold and  ends up reducing pension tax relief
+        [TestCase(60, 60000, 500, true, 0, 18000, 7200)]
+        [TestCase(60, 60000, 500, true, 6999, 18000, 7200)]
+        [TestCase(60, 60000, 500, true, 7000, 18000, 3600)]
+        [TestCase(60, 60000, 500, true, 7001, 18000, 3600)]
+
+        public void CalculateUnusedTaxRelief_ReturnsCorrectResult(
+            int age, decimal earnings, decimal monthlyContribution, bool isMarried, decimal spouseIncome, decimal expectedUnusedRoom,
+            decimal expectedUnusedRelief)
+        {
+            var result = PensionCalculator.CalculateUnusedTaxRelief(age, earnings, monthlyContribution, isMarried, spouseIncome, false);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.UnusedContributionRoom, Is.EqualTo(expectedUnusedRoom));
+                Assert.That(result.UnusedTaxRelief, Is.EqualTo(expectedUnusedRelief));
+            });
+        }
+
+        [Test]
+        public void CalculateUnusedTaxRelief_ContributionsExceedMax_ReturnsZero()
+        {
+            var result = PensionCalculator.CalculateUnusedTaxRelief(45, 50000, 2000, false, 0m, false);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.UnusedContributionRoom, Is.EqualTo(0m));
+                Assert.That(result.UnusedTaxRelief, Is.EqualTo(0m));
+            });
+        }
+
+        [Test]
+        public void CalculateUnusedTaxRelief_NegativeAge_ThrowsArgumentOutOfRangeException()
+        {
+            Assert.That(() => PensionCalculator.CalculateUnusedTaxRelief(-1, 60000, 500, false, 0m, false),
+                Throws.TypeOf<ArgumentOutOfRangeException>()
+                      .With.Property("ParamName").EqualTo("age"));
+        }
+
+        [Test]
+        public void CalculateUnusedTaxRelief_BothMarriedAndQualifyingSingleParent_ThrowsArgumentException()
+        {
+            Assert.That(() => PensionCalculator.CalculateUnusedTaxRelief(45, 50000, 500, true, 20000m, true),
+                Throws.TypeOf<ArgumentException>());
         }
     }
 }

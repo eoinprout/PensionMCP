@@ -74,5 +74,39 @@ namespace TestPensionMCP.Mcp
                 PensionCalculatorTools.CalculateTaxRelief(45, 50000, 1000, true, 20000, true);
             });
         }
+
+        [Test]
+        public void CalculateUnusedTaxRelief_WithUnusedRoom_ReturnsCorrectValues()
+        {
+            string result = PensionCalculatorTools.CalculateUnusedTaxRelief(45, 50000, 500, false, 0, false);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Does.Contain("Annual contributions: 6000"));
+                Assert.That(result, Does.Contain("Maximum allowable contribution: 12500"));
+                Assert.That(result, Does.Contain("Unused contribution room: 6500"));
+                Assert.That(result, Does.Contain("Marginal tax rate: 40%"));
+                Assert.That(result, Does.Contain("Unused tax relief: 2600"));
+            });
+        }
+
+        [Test]
+        public void CalculateUnusedTaxRelief_ContributionsExceedMax_ReturnsZero()
+        {
+            string result = PensionCalculatorTools.CalculateUnusedTaxRelief(45, 50000, 2000, false, 0, false);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Does.Contain("Unused contribution room: 0"));
+                Assert.That(result, Does.Contain("Unused tax relief: 0"));
+            });
+        }
+
+        [Test]
+        public void CalculateUnusedTaxRelief_BothMarriedAndQualifyingSingleParent_ThrowsMcpException()
+        {
+            Assert.Throws<McpException>(() =>
+            {
+                PensionCalculatorTools.CalculateUnusedTaxRelief(45, 50000, 500, true, 20000, true);
+            });
+        }
     }
 }

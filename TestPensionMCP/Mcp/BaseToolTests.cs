@@ -20,6 +20,11 @@ namespace TestPensionMCP.Mcp
         {
             CheckRequired(value, paramName);
         }
+
+        public static void CallCheckMaritalStatus(bool isMarried, bool isQualifyingSingleParent)
+        {
+            CheckMaritalStatus(isMarried, isQualifyingSingleParent);
+        }
     }
 
     internal sealed class BaseToolTests
@@ -77,6 +82,24 @@ namespace TestPensionMCP.Mcp
             {
                 TestableBaseTool.CallCheckRequired("   ", "name");
             });
+        }
+
+        [TestCase(false, false, false)]
+        [TestCase(true, false, false)]
+        [TestCase(false, true, false)]
+        [TestCase(true, true, true)]
+        public void CheckMaritalStatus_Combinations(bool isMarried, bool isQualifyingSingleParent, bool expectException)
+        {
+            if (expectException)
+            {
+                Assert.Throws<McpException>(() =>
+                    TestableBaseTool.CallCheckMaritalStatus(isMarried, isQualifyingSingleParent));
+            }
+            else
+            {
+                Assert.DoesNotThrow(() =>
+                    TestableBaseTool.CallCheckMaritalStatus(isMarried, isQualifyingSingleParent));
+            }
         }
     }
 }

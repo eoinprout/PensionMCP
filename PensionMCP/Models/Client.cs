@@ -14,6 +14,7 @@ namespace PensionMCP.Models
         public bool IsMarried { get; set; }
         public decimal SpouseIncome { get; set; } = Constants.AmountNotSet;
         public bool IsQualifyingSingleParent { get; set; }
+
     }
 }
 

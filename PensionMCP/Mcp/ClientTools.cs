@@ -128,8 +128,7 @@ namespace PensionMCP.Mcp
         public async Task<string> UpdateClientIsMarried(int id, bool isMarried)
         {
             var client = await FindClientAsync(id);
-            if (isMarried && client.IsQualifyingSingleParent)
-                throw new McpException("A client cannot be both married and a qualifying single parent.");
+            CheckMaritalStatus(isMarried, client.IsQualifyingSingleParent);
             client.IsMarried = isMarried;
             await context.SaveChangesAsync();
             return ToJson(client);
@@ -150,8 +149,7 @@ namespace PensionMCP.Mcp
         public async Task<string> UpdateClientIsQualifyingSingleParent(int id, bool isQualifyingSingleParent)
         {
             var client = await FindClientAsync(id);
-            if (isQualifyingSingleParent && client.IsMarried)
-                throw new McpException("A client cannot be both married and a qualifying single parent.");
+            CheckMaritalStatus(client.IsMarried, isQualifyingSingleParent);
             client.IsQualifyingSingleParent = isQualifyingSingleParent;
             await context.SaveChangesAsync();
             return ToJson(client);

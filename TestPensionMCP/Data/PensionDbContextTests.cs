@@ -12,6 +12,7 @@ namespace TestPensionMCP.Data
         [SetUp]
         public async Task SetUp()
         {
+            //Using an in memory for testing, quicker than writting the disk and vanishes when done.
             _connection = new SqliteConnection("Data Source=:memory:");
             await _connection.OpenAsync();
 
