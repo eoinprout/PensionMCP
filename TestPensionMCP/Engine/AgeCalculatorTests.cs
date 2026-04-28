@@ -29,6 +29,20 @@ namespace TestPensionMCP.Engine
             Assert.That(result, Is.EqualTo(ParseDate(expectedDate)));
         }
 
+        [TestCase("1974-12-12", 66, "2026-04-27", 175)]
+        [TestCase("1974-12-12", 51, "2026-04-29", 0)]
+        [TestCase("1974-12-12", 52, "2026-04-29", 7)]
+        [TestCase("1974-12-12", 0, "1974-12-12", 0)]
+        [TestCase("2000-01-01", 30, "2025-12-31", 48)]
+        [TestCase("2000-01-01", 25, "2025-12-31", 0)]
+        public void MonthsToRetirement_ReturnsCorrectMonths(string dateOfBirth, int retirementAge, string from, int expectedMonths)
+        {
+            var dob = ParseDate(dateOfBirth);
+            var asOf = ParseDate(from);
+            int result = AgeCalculator.MonthsToRetirement(dob, retirementAge, asOf);
+            Assert.That(result, Is.EqualTo(expectedMonths));
+        }
+
         private static DateOnly ParseDate(string s) => DateOnly.Parse(s, CultureInfo.InvariantCulture);
     }
 }

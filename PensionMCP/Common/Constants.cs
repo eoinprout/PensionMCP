@@ -13,5 +13,8 @@
         public const decimal AmountNotSet = -1m;
 
         public const string DefaultDateFormat = "yyyy-MM-dd";
+
+        public const int StandardRetirementAge = 66;
+
     }
 }

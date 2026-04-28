@@ -12,6 +12,8 @@ namespace TestPensionMCP.Data
         [SetUp]
         public async Task SetUp()
         {
+            //These tests also catch issues like forgetting to add a migration if the client model has changed.
+
             //Using an in memory for testing, quicker than writting the disk and vanishes when done.
             _connection = new SqliteConnection("Data Source=:memory:");
             await _connection.OpenAsync();

@@ -65,5 +65,21 @@ namespace PensionMCP.Mcp
                 Unused tax relief: {result.UnusedTaxRelief}
                 """;
         }
+
+        [McpServerTool(Title = "Estimate Pension Pot Value", Destructive = false, ReadOnly = true, Idempotent = true, OpenWorld = false)]
+        [Description("Estimates the future pension pot value at retirement. annualInterestRate is an assumed growth rate provided as a percentage. monthlyContribution is the client's own monthly contribution only, not including employer contributions. dateOfBirth format: yyyy-MM-dd.")]
+        public static string EstimatePensionPot(decimal currentPotValue, decimal monthlyContribution, decimal annualInterestRate, string dateOfBirth, int retirementAge)
+        {
+            var dob = ParseDateParam(dateOfBirth, nameof(dateOfBirth));
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            var result = PensionCalculator.EstimatePensionPot(currentPotValue, monthlyContribution, annualInterestRate, dob, retirementAge, today);
+            return $"""
+                Current pot value: {result.CurrentPotValue}
+                Monthly contribution: {result.MonthlyContribution}
+                Annual interest rate: {result.AnnualInterestRate}%
+                Number of months until retirement: {result.NumberOfMonths}
+                Estimated pot value at retirement: {result.EstimatedPotValue}
+                """;
+        }
     }
 }

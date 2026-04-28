@@ -212,5 +212,62 @@ namespace TestPensionMCP.Engine
             Assert.That(() => PensionCalculator.CalculateUnusedTaxRelief(45, 50000, 500, true, 20000m, true),
                 Throws.TypeOf<ArgumentException>());
         }
+
+        private static readonly DateOnly _AsOf = new DateOnly(2026, 4, 27);
+        private static DateOnly Dob(int currentAge) => new DateOnly(2026 - currentAge, 4, 29);
+
+        [TestCase(0, 500, 0, 30, 60, 180000)]
+        [TestCase(10000, 0, 0, 30, 60, 10000)]
+        [TestCase(10000, 500, 0, 30, 60, 190000)]
+        [TestCase(5000, 0, 0, 50, 50, 5000)]
+        [TestCase(0, 0, 5, 30, 60, 0)]
+        [TestCase(10000, 0, 12, 30, 31, 11268)]
+        [TestCase(0, 1000, 12, 30, 31, 12809)]
+        [TestCase(10000, 1000, 12, 30, 31, 24077)]
+        [TestCase(0, 500, 5, 30, 60, 417863)]
+        [TestCase(10000, 500, 5, 30, 60, 462540)]
+        public void EstimatePensionPot_ReturnsCorrectValue(
+            decimal currentPotValue, decimal monthlyContribution, decimal annualInterestRate,
+            int currentAge, int retirementAge, decimal expectedFV)
+        {
+            var result = PensionCalculator.EstimatePensionPot(currentPotValue, monthlyContribution, annualInterestRate,
+                Dob(currentAge), retirementAge, _AsOf);
+            Assert.That(result.EstimatedPotValue, Is.EqualTo(expectedFV));
+        }
+
+        [Test]
+        public void EstimatePensionPot_ReturnsCorrectNumberOfMonths()
+        {
+            var result = PensionCalculator.EstimatePensionPot(0, 500, 5, Dob(30), 60, _AsOf);
+            Assert.That(result.NumberOfMonths, Is.EqualTo(360));
+        }
+
+        [Test]
+        public void EstimatePensionPot_FutureDateOfBirth_ThrowsArgumentOutOfRangeException()
+        {
+            var futureDob = _AsOf.AddDays(1);
+            Assert.That(() => PensionCalculator.EstimatePensionPot(0, 500, 5, futureDob, 60, _AsOf),
+                Throws.TypeOf<ArgumentOutOfRangeException>()
+                      .With.Property("ParamName").EqualTo("dateOfBirth"));
+        }
+
+        [Test]
+        public void EstimatePensionPot_RetirementInThePast_ReturnsZeroMonths()
+        {
+            var result = PensionCalculator.EstimatePensionPot(10000, 500, 5, Dob(60), 50, _AsOf);
+            Assert.That(result.NumberOfMonths, Is.EqualTo(0));
+            Assert.That(result.EstimatedPotValue, Is.EqualTo(10000));
+        }
+
+        [TestCase(-1, 500, 5, "currentPotValue")]
+        [TestCase(0, -100, 5, "monthlyContribution")]
+        [TestCase(0, 500, -1, "annualInterestRate")]
+        public void EstimatePensionPot_InvalidInput_ThrowsArgumentOutOfRangeException(
+            decimal pot, decimal contribution, decimal rate, string expectedParam)
+        {
+            Assert.That(() => PensionCalculator.EstimatePensionPot(pot, contribution, rate, Dob(30), 60, _AsOf),
+                Throws.TypeOf<ArgumentOutOfRangeException>()
+                      .With.Property("ParamName").EqualTo(expectedParam));
+        }
     }
 }

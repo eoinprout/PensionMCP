@@ -29,6 +29,7 @@ namespace PensionMCP.Mcp
                 5: Watch for opportunities to update existing clients data using the PensionMCP tools.
                 6: a -1 is a default value indicating that the value has not been set by the user and therefore should not be used. You as the agent should request the value from the user.
                 7: Before deleting anything you must ask the user to confirm that they want to delete the record, and you should explain the consequences of deleting the record. Deleting a client record will result in the loss of all data associated with that client, and this action cannot be undone.
+                8: The standard retirement age in Ireland is 66, but clients may choose to retire earlier or later.
                 """);
 
             // TODO: add a taxonomy ?

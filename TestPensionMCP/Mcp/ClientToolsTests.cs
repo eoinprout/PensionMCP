@@ -246,6 +246,17 @@ namespace TestPensionMCP.Mcp
         }
 
         [Test]
+        public async Task UpdatePlannedRetirementAge_UpdatesAge()
+        {
+            var tool = new ClientTools(_context);
+
+            var json = await tool.UpdatePlannedRetirementAge(1, 70);
+            var client = JsonSerializer.Deserialize<JsonElement>(json);
+
+            Assert.That(client.GetProperty("PlannedRetirementAge").GetInt32, Is.EqualTo(70));
+        }
+
+        [Test]
         public void UpdateClientNetRelevantIncome_ThrowsMcpException()
         {
             var tool = new ClientTools(_context);

@@ -8,6 +8,7 @@ using System.ComponentModel;
 
 namespace PensionMCP.Mcp
 {
+    // apostrophes in tool Title strings cause Claude Desktop to not see the tool ?!
     [McpServerToolType]
     public class ClientTools(PensionDbContext context) : BaseTool
     {
@@ -118,6 +119,18 @@ namespace PensionMCP.Mcp
             var client = await FindClientAsync(id);
 
             client.NetRelevantIncome = netRelevantIncome;
+            await context.SaveChangesAsync();
+
+            return ToJson(client);
+        }
+
+        [McpServerTool(Title = "Update clients planned retirement age", Destructive = false, ReadOnly = false, Idempotent = false, OpenWorld = false)]
+        [Description("Updates the planned retirement age of an existing client record. Returns the updated client as JSON.")]
+        public async Task<string> UpdatePlannedRetirementAge(int id, int plannedRetirementAge)
+        {
+            var client = await FindClientAsync(id);
+
+            client.PlannedRetirementAge = plannedRetirementAge;
             await context.SaveChangesAsync();
 
             return ToJson(client);

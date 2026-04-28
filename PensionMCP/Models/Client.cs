@@ -7,6 +7,7 @@ namespace PensionMCP.Models
         public int Id { get; set; }
         public required string Name { get; set; }
         public DateOnly DateOfBirth { get; set; }
+        public int PlannedRetirementAge { get; set; } = Constants.StandardRetirementAge;
         public decimal NetRelevantIncome { get; set; } = Constants.AmountNotSet;
         public decimal CurrentPensionPotValue { get; set; } = Constants.AmountNotSet;
         public decimal CurrentMonthlyPensionContribution { get; set; } = Constants.AmountNotSet;

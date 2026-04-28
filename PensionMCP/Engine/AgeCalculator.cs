@@ -28,5 +28,21 @@
         {
             return dateOfBirth.AddYears(targetAge);
         }
+
+        /// <summary>
+        /// Returns the number of whole months from today until the clients retirement birthday.
+        /// </summary>
+        /// <param name="dateOfBirth">Clients date of birth</param>
+        /// <param name="retirementAge">Target retirement age in years</param>
+        /// <param name="asOf">The from date,normally today</param>
+        /// <returns>Number of whole months until retirement</returns>
+        public static int MonthsToRetirement(DateOnly dateOfBirth, int retirementAge, DateOnly asOf)
+        {
+            var retirementDate = GetDateTurnsAge(dateOfBirth, retirementAge);
+            var months = ((retirementDate.Year - asOf.Year) * 12) + retirementDate.Month - asOf.Month;
+            if (retirementDate.Day < asOf.Day)
+                months--;
+            return Math.Max(months, 0);
+        }
     }
 }
