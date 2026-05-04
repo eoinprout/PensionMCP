@@ -140,5 +140,55 @@ namespace TestPensionMCP.Mcp
                 PensionCalculatorTools.GetPensionLumpSumDetails(100000, -1);
             });
         }
+
+        [Test]
+        public void GetStatePensionEntitlement_FullEntitlement_ReturnsCorrectValues()
+        {
+            string result = PensionCalculatorTools.GetStatePensionEntitlement(26, 0, 66);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Does.Contain("Current PRSI contributions: 0"));
+                Assert.That(result, Does.Contain("Projected additional contributions: 2080"));
+                Assert.That(result, Does.Contain("Total projected PRSI contributions at retirement: 2080"));
+                Assert.That(result, Does.Contain("State Pension entitlement: Yes"));
+                Assert.That(result, Does.Contain("Full entitlement: Yes"));
+                Assert.That(result, Does.Contain("Estimated weekly State Pension: 299.30"));
+                Assert.That(result, Does.Contain("Estimated annual State Pension: 15563.60"));
+            });
+        }
+
+        [Test]
+        public void GetStatePensionEntitlement_PartialEntitlement_ReturnsCorrectValues()
+        {
+            string result = PensionCalculatorTools.GetStatePensionEntitlement(60, 520, 66);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Does.Contain("Current PRSI contributions: 520"));
+                Assert.That(result, Does.Contain("Total projected PRSI contributions at retirement: 832"));
+                Assert.That(result, Does.Contain("State Pension entitlement: Yes"));
+                Assert.That(result, Does.Contain("Full entitlement: No"));
+                Assert.That(result, Does.Contain("Estimated weekly State Pension: 119.72"));
+            });
+        }
+
+        [Test]
+        public void GetStatePensionEntitlement_NotEntitled_ReturnsNotEntitled()
+        {
+            string result = PensionCalculatorTools.GetStatePensionEntitlement(66, 0, 66);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Does.Contain("State Pension entitlement: No"));
+                Assert.That(result, Does.Contain("Estimated weekly State Pension: 0"));
+            });
+        }
+
+        [Test]
+        public void GetStatePensionEntitlement_NegativePrsiContributions_ThrowsMcpException()
+        {
+            Assert.Throws<McpException>(() =>
+            {
+                PensionCalculatorTools.GetStatePensionEntitlement(40, -1, 66);
+            });
+        }
     }
 }

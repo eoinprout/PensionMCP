@@ -19,7 +19,7 @@ namespace PensionMCP.Engine
         /// </remarks>
         public static decimal GetMaxContribution(int age, decimal earnings)
         {
-            CheckAge(age);
+            CheckNotNegative(age, nameof(age));
 
             var limit = GetAgeBand(age);
             var cappedEarnings = Math.Min(earnings, TaxReliefLimits.EarningsCap);
@@ -28,7 +28,7 @@ namespace PensionMCP.Engine
 
         public static TaxReliefLimit GetAgeBand(int age)
         {
-            CheckAge(age);
+            CheckNotNegative(age, nameof(age));
 
             return TaxReliefLimits.ContributionLimits
                 .First(l => age >= l.AgeFrom && age <= l.AgeTo);
@@ -43,7 +43,7 @@ namespace PensionMCP.Engine
         /// <returns></returns>
         public static AnnualAllowanceResult CheckAnnualAllowance(int age, decimal earnings, decimal monthlyContribution)
         {
-            CheckAge(age);
+            CheckNotNegative(age, nameof(age));
 
             var maxAllowance = GetMaxContribution(age, earnings);
             var annualContributions = monthlyContribution * 12;
@@ -65,7 +65,7 @@ namespace PensionMCP.Engine
         /// <returns></returns>
         public static TaxReliefResult CalculateTaxRelief(int age, decimal earnings, decimal monthlyContribution, bool isMarried, decimal spouseIncome, bool isQualifyingSingleParent)
         {
-            CheckAge(age);
+            CheckNotNegative(age, nameof(age));
 
             var annualContributions = monthlyContribution * 12;
             var maxAllowable = GetMaxContribution(age, earnings);
@@ -88,7 +88,7 @@ namespace PensionMCP.Engine
         /// <returns></returns>
         public static UnusedTaxReliefResult CalculateUnusedTaxRelief(int age, decimal earnings, decimal monthlyContribution, bool isMarried, decimal spouseIncome, bool isQualifyingSingleParent)
         {
-            CheckAge(age);
+            CheckNotNegative(age, nameof(age));
 
             var annualContributions = monthlyContribution * 12;
             var maxAllowable = GetMaxContribution(age, earnings);
@@ -119,12 +119,9 @@ namespace PensionMCP.Engine
         {
             if (dateOfBirth > asOf)
                 throw new ArgumentOutOfRangeException(nameof(dateOfBirth), "Date of birth cannot be in the future.");
-            if (currentPotValue < 0)
-                throw new ArgumentOutOfRangeException(nameof(currentPotValue), "Current pot value cannot be negative.");
-            if (monthlyContribution < 0)
-                throw new ArgumentOutOfRangeException(nameof(monthlyContribution), "Monthly contribution cannot be negative.");
-            if (annualInterestRate < 0)
-                throw new ArgumentOutOfRangeException(nameof(annualInterestRate), "Annual interest rate cannot be negative.");
+            CheckNotNegative(currentPotValue, nameof(currentPotValue));
+            CheckNotNegative(monthlyContribution, nameof(monthlyContribution));
+            CheckNotNegative(annualInterestRate, nameof(annualInterestRate));
 
             int n = AgeCalculator.MonthsToRetirement(dateOfBirth, retirementAge, asOf);
             decimal i = annualInterestRate / 100m / 12m;
@@ -178,10 +175,53 @@ namespace PensionMCP.Engine
             return tax;
         }
 
-        private static void CheckAge(int age)
+        /// <summary>
+        /// CALC006: State Pension Entitlement Check
+        /// </summary>
+        /// <param name="currentAge"></param>
+        /// <param name="prsiContributions"></param>
+        /// <param name="retirementAge"></param>
+        /// <returns></returns>
+        public static StatePensionEntitlementResult CheckStatePensionEntitlement(int currentAge, int prsiContributions, int retirementAge)
         {
-            if (age < 0)
-                throw new ArgumentOutOfRangeException(nameof(age), "Age cannot be negative.");
+            CheckNotNegative(currentAge, nameof(currentAge));
+            CheckNotNegative(retirementAge, nameof(retirementAge));
+            CheckNotNegative(prsiContributions, nameof(prsiContributions));
+
+            int yearsToRetirement = Math.Max(0, retirementAge - currentAge);
+            int projectedAdditional = yearsToRetirement * StatePensionLimits.ContributionsPerYear;
+            int totalProjected = prsiContributions + projectedAdditional;
+            int effectiveContributions = Math.Min(totalProjected, StatePensionLimits.FullEntitlementContributions);
+
+            bool isEntitled = effectiveContributions >= StatePensionLimits.MinContributionsForEntitlement;
+            bool hasFullEntitlement = effectiveContributions >= StatePensionLimits.FullEntitlementContributions;
+
+            decimal weeklyRate;
+            if (!isEntitled)
+                weeklyRate = 0m;
+            else if (hasFullEntitlement)
+                weeklyRate = StatePensionLimits.FullWeeklyRate;
+            else
+                weeklyRate = Math.Round(StatePensionLimits.FullWeeklyRate * effectiveContributions / StatePensionLimits.FullEntitlementContributions, 2, MidpointRounding.AwayFromZero);
+
+            decimal annualRate = weeklyRate * StatePensionLimits.ContributionsPerYear;
+
+            return new StatePensionEntitlementResult(
+                prsiContributions,
+                projectedAdditional,
+                totalProjected,
+                isEntitled,
+                hasFullEntitlement,
+                weeklyRate,
+                annualRate);
         }
+
+        private static void CheckNotNegative(decimal value, string paramName)
+        {
+            if (value < 0)
+                throw new ArgumentOutOfRangeException(paramName, $"{paramName} cannot be negative.");
+        }
+
     }
 }
+

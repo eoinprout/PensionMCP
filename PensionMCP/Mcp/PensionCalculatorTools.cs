@@ -87,6 +87,24 @@ namespace PensionMCP.Mcp
                 """;
         }
 
+        [McpServerTool(Title = "Check State Pension Entitlement", Destructive = false, ReadOnly = true, Idempotent = true, OpenWorld = false)]
+        [Description("Determines a client's likely State Pension (Contributory) entitlement based on their PRSI contributions to date and their expected retirement age. The State Pension is separate from any private pension the client may have.")]
+        public static string GetStatePensionEntitlement(int currentAge, int prsiContributions, int retirementAge)
+        {
+            CheckNotNegative(prsiContributions, nameof(prsiContributions));
+
+            var result = PensionCalculator.CheckStatePensionEntitlement(currentAge, prsiContributions, retirementAge);
+            return $"""
+                Current PRSI contributions: {result.CurrentContributions}
+                Projected additional contributions: {result.ProjectedAdditionalContributions}
+                Total projected PRSI contributions at retirement: {result.TotalProjectedContributions}
+                State Pension entitlement: {(result.IsEntitled ? "Yes" : "No")}
+                Full entitlement: {(result.HasFullEntitlement ? "Yes" : "No")}
+                Estimated weekly State Pension: {result.WeeklyStatePension}
+                Estimated annual State Pension: {result.AnnualStatePension}
+                """;
+        }
+
         [McpServerTool(Title = "Estimate Pension Pot Value", Destructive = false, ReadOnly = true, Idempotent = true, OpenWorld = false)]
         [Description("Estimates the future pension pot value at retirement. annualInterestRate is an assumed growth rate provided as a percentage. monthlyContribution is the client's own monthly contribution only, not including employer contributions. dateOfBirth format: yyyy-MM-dd.")]
         public static string EstimatePensionPot(decimal currentPotValue, decimal monthlyContribution, decimal annualInterestRate, string dateOfBirth, int retirementAge)

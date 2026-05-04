@@ -306,5 +306,92 @@ namespace TestPensionMCP.Engine
                 Throws.TypeOf<ArgumentOutOfRangeException>()
                       .With.Property("ParamName").EqualTo(expectedParam));
         }
+
+        [Test]
+        public void CheckStatePensionEntitlement_WillReachFullEntitlementAtRetirement_ReturnsFullRate()
+        {
+            var result = PensionCalculator.CheckStatePensionEntitlement(26, 0, 66);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.CurrentContributions, Is.EqualTo(0));
+                Assert.That(result.ProjectedAdditionalContributions, Is.EqualTo(2080));
+                Assert.That(result.TotalProjectedContributions, Is.EqualTo(2080));
+                Assert.That(result.IsEntitled, Is.True);
+                Assert.That(result.HasFullEntitlement, Is.True);
+                Assert.That(result.WeeklyStatePension, Is.EqualTo(299.30m));
+                Assert.That(result.AnnualStatePension, Is.EqualTo(15563.60m));
+            });
+        }
+
+        [Test]
+        public void CheckStatePensionEntitlement_AlreadyHasFullContributions_ReturnsFullRate()
+        {
+            var result = PensionCalculator.CheckStatePensionEntitlement(40, 2080, 66);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.TotalProjectedContributions, Is.EqualTo(3432));
+                Assert.That(result.IsEntitled, Is.True);
+                Assert.That(result.HasFullEntitlement, Is.True);
+                Assert.That(result.WeeklyStatePension, Is.EqualTo(299.30m));
+                Assert.That(result.AnnualStatePension, Is.EqualTo(15563.60m));
+            });
+        }
+
+        [Test]
+        public void CheckStatePensionEntitlement_AlreadyRetired_ReturnsFullRate()
+        {
+            var result = PensionCalculator.CheckStatePensionEntitlement(121, 2080, 66);
+            Assert.That(result.WeeklyStatePension, Is.EqualTo(299.30m));
+        }
+
+        [Test]
+        public void CheckStatePensionEntitlement_PartialContributions_ReturnsProportionalRate()
+        {
+            var result = PensionCalculator.CheckStatePensionEntitlement(60, 520, 66);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.ProjectedAdditionalContributions, Is.EqualTo(312));
+                Assert.That(result.TotalProjectedContributions, Is.EqualTo(832));
+                Assert.That(result.IsEntitled, Is.True);
+                Assert.That(result.HasFullEntitlement, Is.False);
+                Assert.That(result.WeeklyStatePension, Is.EqualTo(119.72m));
+                Assert.That(result.AnnualStatePension, Is.EqualTo(6225.44m));
+            });
+        }
+
+        [Test]
+        public void CheckStatePensionEntitlement_BelowMinimumThreshold_ReturnsNotEntitled()
+        {
+            var result = PensionCalculator.CheckStatePensionEntitlement(66, 519, 66);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.IsEntitled, Is.False);
+                Assert.That(result.HasFullEntitlement, Is.False);
+                Assert.That(result.WeeklyStatePension, Is.EqualTo(0m));
+                Assert.That(result.AnnualStatePension, Is.EqualTo(0m));
+            });
+        }
+
+        [Test]
+        public void CheckStatePensionEntitlement_NoContributions_ReturnsNotEntitled()
+        {
+            var result = PensionCalculator.CheckStatePensionEntitlement(66, 0, 66);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.IsEntitled, Is.False);
+                Assert.That(result.WeeklyStatePension, Is.EqualTo(0m));
+            });
+        }
+
+        [TestCase(-1, 0, 66, "currentAge")]
+        [TestCase(30, -1, 66, "prsiContributions")]
+        [TestCase(40, 0, -1, "retirementAge")]
+        public void CheckStatePensionEntitlement_InvalidInput_ThrowsArgumentOutOfRangeException(
+            int currentAge, int prsiContributions, int retirementAge, string expectedParam)
+        {
+            Assert.That(() => PensionCalculator.CheckStatePensionEntitlement(currentAge, prsiContributions, retirementAge),
+                Throws.TypeOf<ArgumentOutOfRangeException>()
+                      .With.Property("ParamName").EqualTo(expectedParam));
+        }
     }
 }
