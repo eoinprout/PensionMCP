@@ -21,6 +21,26 @@ namespace PensionMCP.Mcp
                 """;
         }
 
+        [McpServerTool(Title = "Get Pension Lump Sum Details", Destructive = false, ReadOnly = true, Idempotent = true, OpenWorld = false)]
+        [Description("Calculates the clients pension lump sum, the tax free amount, the total gross, tax due and nett amount after tax ")]
+        public static string GetPensionLumpSumDetails(decimal pensionFundValue, decimal marginalRate)
+        {
+            CheckNotNegative(pensionFundValue, nameof(pensionFundValue));
+            CheckNotNegative(marginalRate, nameof(marginalRate));
+
+            var grossLumpSum = PensionCalculator.CalculateGrossLumpSum(pensionFundValue);
+            var taxFreeLumpSum = PensionCalculator.CalculateTaxFreeLumpSum(grossLumpSum);
+            var taxDue = PensionCalculator.CalculateLumpSumTax(grossLumpSum, marginalRate);
+            var nettLumpSum = grossLumpSum - taxDue;
+            return $"""
+                Pension fund value: {pensionFundValue}
+                Gross lump sum: {grossLumpSum}
+                Tax free amount: {taxFreeLumpSum}
+                Tax due: {taxDue}
+                Nett lump sum: {nettLumpSum}
+                """;
+        }
+
         [McpServerTool(Title = "Check Annual Allowance", Destructive = false, ReadOnly = true, Idempotent = true, OpenWorld = false)]
         [Description("Checks whether a client's annual pension contributions exceed the maximum eligible for tax relief. monthlyContribution is the client's own monthly contribution only, not including employer contributions.")]
         public static string CheckAnnualAllowance(int age, decimal earnings, decimal monthlyContribution)
@@ -35,6 +55,7 @@ namespace PensionMCP.Mcp
                 Status: {status}
                 """;
         }
+
         [McpServerTool(Title = "Calculate Tax Relief", Destructive = false, ReadOnly = true, Idempotent = true, OpenWorld = false)]
         [Description("Calculates the annual pension tax relief for a client based on their income tax band. monthlyContribution is the client's own monthly contribution only, not including employer contributions. Relief is capped at the maximum allowable contribution for the client's age and earnings.")]
         public static string CalculateTaxRelief(int age, decimal earnings, decimal monthlyContribution, bool isMarried, decimal spouseIncome, bool isQualifyingSingleParent)

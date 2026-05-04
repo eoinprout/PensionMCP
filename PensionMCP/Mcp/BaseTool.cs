@@ -33,6 +33,18 @@ namespace PensionMCP.Mcp
         }
 
         /// <summary>
+        /// Value cannot be negative
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="paramName"></param>
+        /// <exception cref="McpException"></exception>
+        protected static void CheckNotNegative(decimal value, string paramName)
+        {
+            if (value < 0)
+                throw new McpException($"{paramName} cannot be negative.");
+        }
+
+        /// <summary>
         /// Client cannot be both married and a qualifying single parent.
         /// </summary>
         /// <param name="isMarried"></param>

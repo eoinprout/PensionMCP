@@ -242,6 +242,43 @@ namespace TestPensionMCP.Engine
             Assert.That(result.NumberOfMonths, Is.EqualTo(360));
         }
 
+        [TestCase(0, 0)]
+        [TestCase(100000, 100000)]
+        [TestCase(200000, 200000)]
+        [TestCase(300000, 200000)]
+        [TestCase(1000000, 200000)]
+        public void CalculateTaxFreeLumpSum_ReturnsExpected(decimal grossLumpSum, decimal expected)
+        {
+            var result = PensionCalculator.CalculateTaxFreeLumpSum(grossLumpSum);
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [TestCase(0, 0)]
+        [TestCase(100000, 25000)]
+        [TestCase(200000, 50000)]
+        [TestCase(123456, 30864)]
+        public void CalculateGrossLumpSum_ReturnsExpected(decimal pensionFundValue, decimal expected)
+        {
+            var result = PensionCalculator.CalculateGrossLumpSum(pensionFundValue);
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [TestCase(0, 0, 0)]
+        [TestCase(200000, 0, 0)]
+        [TestCase(300000, 0, 20000)]
+        [TestCase(600000, 40, 100000)]
+        [TestCase(700000, 40, 140000)]
+        [TestCase(500000, 20, 60000)]
+        [TestCase(0, 40, 0)]
+        [TestCase(100, 40, 0)]
+        [TestCase(0, 20, 0)]
+        [TestCase(100, 20, 0)]
+        public void CalculateLumpSumTax_ReturnsExpected(decimal grossLumpSum, decimal marginalRate, decimal expected)
+        {
+            var result = PensionCalculator.CalculateLumpSumTax(grossLumpSum, marginalRate);
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
         [Test]
         public void EstimatePensionPot_FutureDateOfBirth_ThrowsArgumentOutOfRangeException()
         {

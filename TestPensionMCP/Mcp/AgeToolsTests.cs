@@ -45,5 +45,11 @@ namespace TestPensionMCP.Mcp
         {
             Assert.That(AgeTools.GetDateTurnsAge(dateOfBirth, age), Is.EqualTo(expected));
         }
+
+        [Test]
+        public void GetDateTurnsAge_InvalidAge_ThrowsMcpException()
+        {
+            Assert.Throws<McpException>(() => AgeTools.GetDateTurnsAge("1974-12-12", -1));
+        }
     }
 }

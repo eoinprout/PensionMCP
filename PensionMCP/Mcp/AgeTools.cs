@@ -49,6 +49,7 @@ namespace PensionMCP.Mcp
         [Description("Returns the date on which a person turns a given age, based on their date of birth (date format: yyyy-MM-dd)")]
         public static string GetDateTurnsAge(string dateOfBirth, int targetAge)
         {
+            CheckNotNegative(targetAge, nameof(targetAge));
             DateOnly dob = ParseDateParam(dateOfBirth, "asOf");
 
             DateOnly result = AgeCalculator.GetDateTurnsAge(dob, targetAge);

@@ -108,5 +108,37 @@ namespace TestPensionMCP.Mcp
                 PensionCalculatorTools.CalculateUnusedTaxRelief(45, 50000, 500, true, 20000, true);
             });
         }
+
+        [Test]
+        public void GetPensionLumpSumDetails_ReturnsCorrectValues()
+        {
+            string result = PensionCalculatorTools.GetPensionLumpSumDetails(1000000, 40);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Does.Contain("Pension fund value: 1000000"));
+                Assert.That(result, Does.Contain("Gross lump sum: 250000"));
+                Assert.That(result, Does.Contain("Tax free amount: 200000"));
+                Assert.That(result, Does.Contain("Tax due: 10000"));
+                Assert.That(result, Does.Contain("Nett lump sum: 240000"));
+            });
+        }
+
+        [Test]
+        public void GetPensionLumpSumDetails_NegativePensionFundValue_ThrowsArgumentOutOfRangeException()
+        {
+            Assert.Throws<McpException>(() =>
+            {
+                PensionCalculatorTools.GetPensionLumpSumDetails(-1, 40);
+            });
+        }
+
+        [Test]
+        public void GetPensionLumpSumDetails_NegativeMarginalRate_ThrowsArgumentOutOfRangeException()
+        {
+            Assert.Throws<McpException>(() =>
+            {
+                PensionCalculatorTools.GetPensionLumpSumDetails(100000, -1);
+            });
+        }
     }
 }

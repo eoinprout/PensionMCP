@@ -146,6 +146,38 @@ namespace PensionMCP.Engine
             return new PensionPotEstimateResult(currentPotValue, monthlyContribution, annualInterestRate, n, estimatedPotValue);
         }
 
+        public static decimal CalculateTaxFreeLumpSum(decimal grossLumpSum)
+        {
+            return Math.Min(grossLumpSum, LumpSumTaxBands.TaxFreeBandLimit);
+
+        }
+        public static decimal CalculateGrossLumpSum(decimal pensionFundValue)
+        {
+            return pensionFundValue * LumpSumTaxBands.LumpSumPercent / 100m;
+        }
+
+        public static decimal CalculateLumpSumTax(decimal grossLumpSum, decimal marginalRate)
+        {
+            decimal tax = 0m;
+
+            // Band 1: up to €200,000 — tax-free
+            if (grossLumpSum <= LumpSumTaxBands.TaxFreeBandLimit)
+                return 0m;
+
+            // Band 2: €200,001 to €500,000 - Lower Rate
+            decimal taxableAtLowerRate = Math.Min(grossLumpSum, LumpSumTaxBands.LowerBandLimit) - LumpSumTaxBands.TaxFreeBandLimit;
+            tax += taxableAtLowerRate * LumpSumTaxBands.LowerRate / 100m;
+
+            // Band 3: above €500,000 — marginal rate
+            if (grossLumpSum > LumpSumTaxBands.LowerBandLimit)
+            {
+                decimal taxableAtMarginal = grossLumpSum - LumpSumTaxBands.LowerBandLimit;
+                tax += taxableAtMarginal * marginalRate / 100m;
+            }
+
+            return tax;
+        }
+
         private static void CheckAge(int age)
         {
             if (age < 0)

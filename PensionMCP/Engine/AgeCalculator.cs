@@ -15,7 +15,7 @@
             if (dateOfBirth.Month > asOfDate.Month || (dateOfBirth.Month == asOfDate.Month && dateOfBirth.Day > asOfDate.Day))
                 age--;
 
-            return age;
+            return Math.Max(age, 0);
         }
 
         /// <summary>

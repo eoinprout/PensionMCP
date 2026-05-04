@@ -13,6 +13,7 @@ namespace TestPensionMCP.Engine
         [TestCase("2004-02-29", "2025-03-01", 21)]
         [TestCase("2004-02-29", "2024-02-29", 20)]
         [TestCase("2004-02-29", "2024-02-28", 19)]
+        [TestCase("2004-02-29", "2000-02-28", 0)]
         public void GetAgeAsOfDate_ReturnsCorrectAge(string dateOfBirth, string asOfDate, int expected)
         {
             int result = AgeCalculator.GetAgeAsOfDate(ParseDate(dateOfBirth), ParseDate(asOfDate));
