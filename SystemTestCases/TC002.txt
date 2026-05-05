@@ -1,0 +1,15 @@
+For Agent: 
+Using the Pension Assistant.
+My client Jean-Luc Picard is 58 years old, earns €80,000 and pays tax at the higher rate (40%).
+He intends to contribute €15,000 to his pension this year.
+Task 1: Has he exceeded his annual pension contribution allowance for tax relief?
+Task 2: How much tax relief will he receive on his contribution?
+Task 3: I think the tax relief would be €5,000. Is that correct? 
+Task 4: What unused tax relief remains available to him this year?
+Answer in a very concise table format with 2 columns, Task Id and answer
+
+Expected Result:
+Task 1 = No
+Task 2 = 6000
+Task 3 = No.   CANARY correct answer is 6000
+Task 4 = 5200

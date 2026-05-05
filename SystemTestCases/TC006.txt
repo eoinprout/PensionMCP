@@ -1,0 +1,10 @@
+For Agent:
+Using the pension assistant
+My client Montgomery Scott is 55 years old and has made 1500 PRSI contributions to date.
+Task 1: What is his likely state pension entitlement?
+Task 2: I think he qualifies for the full state pension. Is that right? 
+Answer in a very concise table format with 2 columns, Task Id and answer
+
+Expected Results:
+Task 1: Yes.
+Task 2: No. CANARY doesn’t have enough contributions.

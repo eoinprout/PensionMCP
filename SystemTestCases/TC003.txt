@@ -1,0 +1,10 @@
+For Agent:
+Using the Pension Assistant.
+My client Kathryn Janeway is 40 years old. She has a current pension pot of €50,000.
+She plans to contribute €500 per month and expects a 5% annual growth rate.
+She intends to retire at 65.
+Task 1: Estimate the value of her pension pot at retirement.
+Task 2: I think the estimated pot value will be around €200,000. Does that seem right? 
+Expected Results:
+Task 1: 473060
+Task 2: No. CANARY correct amount is 473060

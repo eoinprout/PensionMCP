@@ -1,0 +1,14 @@
+Note: Benjamin Sisko's record must exist before running this script. Run TC004 first.
+For Agent:
+Task 1: Find the client record for Benjamin Sisko.
+Task 2: Update his net relevant income to €85,000.
+Task 3: Retrieve the record again and confirm the income has been updated.
+Task 4: Delete the record for Benjamin Sisko.
+Task 5: Try to retrieve Benjamin Sisko's record again. What response do you get?
+
+Expected Result:
+Task 1: Found
+Task 2: Income updated
+Task 3: Record retrieved and income is still updated
+Task 4: Delete tool called
+Task 5: Record not found

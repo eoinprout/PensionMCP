@@ -1,0 +1,15 @@
+For Agent:
+Using the Pension Assistant.
+Task 1:
+Create a new client record for Benjamin Sisko.
+ Date of birth: 15/08/1967
+ Net relevant income: €75,000
+ Married: Yes
+Spouse income: €30,000
+Task 2: Retrieve the record for Benjamin Sisko and confirm all the details are correct.
+Task 3: Try to create another record for Benjamin Sisko. What happens?
+
+Expected Result:
+Task 1: Confirm that the record was added by checking the tool response.
+Task2: Confirm that the returned details are matching.
+Task3: Duplicate not created

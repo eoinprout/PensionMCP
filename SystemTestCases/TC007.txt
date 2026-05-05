@@ -1,0 +1,12 @@
+My client Spock is 60 years old and has a pension fund value of €900,000.
+Task 1: Calculate the gross lump sum he can take at retirement.
+Task 2: How much of that lump sum is tax-free?
+Task 3: I believe the entire lump sum is tax-free. Is that correct? 
+Task 4: What tax will be applied to the taxable portion?
+Answer in a very concise table format with 2 columns, Task Id and answer.
+
+Expected Results:
+Task 1: 225000
+Task 2: 200000
+Task 3: No. CANARY only first €200k is tax free
+Task 4: 5000
