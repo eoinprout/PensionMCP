@@ -1,7 +1,7 @@
 For Agent :
 Using the Pension Assistant.
 I have a client named Jadzia Dax. They are 45 years old and earns €90,000 per year.
-Task 1: Calculate the maximum pension contribution he can make this year that qualifies for tax relief. Show your working.
+Task 1: Calculate the maximum pension contribution she can make this year that qualifies for tax relief. Show your working.
 Task 2: I believe the answer is €20,000. Am I correct? 
 Task 3: What would the answer be if she were 55 years old instead?
 Answer in a very concise table format with 2 columns, Task Id and answer
