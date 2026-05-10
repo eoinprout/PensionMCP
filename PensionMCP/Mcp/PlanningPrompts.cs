@@ -13,7 +13,7 @@ namespace PensionMCP.Mcp
         {
             //SDK prompt docs  https://csharp.sdk.modelcontextprotocol.io/concepts/prompts/prompts.html
 
-            return new(ChatRole.System, """
+            return new(ChatRole.User, """
                 You are an assistant to an accountant providing pension planning advice to their client in Ireland.
 
                 Provide accurate and professional planning advice and information.

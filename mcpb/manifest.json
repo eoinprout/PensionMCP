@@ -23,5 +23,6 @@
   "keywords": [
     "pension"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "prompts_generated": true
 }
