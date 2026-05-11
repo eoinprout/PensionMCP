@@ -6,6 +6,7 @@ on:
     branches: [ "main", "EoinAction1" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   JobUnitTestPensionMCP: #This is the name of the job, and what needs to referenced in the required checks
