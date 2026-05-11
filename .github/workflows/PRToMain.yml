@@ -15,7 +15,7 @@ jobs:
   
   JobBuildExe:
     runs-on: ubuntu-latest
-    needs: JobUnitTestPensionMCP
+    needs: unit-test
     steps:
       - uses: actions/checkout@v6.0.2
       - name: Setup .NET
