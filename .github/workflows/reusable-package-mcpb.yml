@@ -29,15 +29,15 @@ jobs:
       - uses: NimbleBrainInc/mcpb-pack@v3
         with:
           directory: mcpb
-          upload: false # Nimble Brain publishes to mpak.dev, Prefer Offical MCP repo.
+          upload: false # Nimble Brain publishes to mpak.dev, Prefer Github releases
           announce: false
 
-      - name: Upload MCPB Installer
-        uses: actions/upload-artifact@v7.0.1             
-        with:
-          archive: false 
-          name: eoinprout-PensionMCP-0.0.1.mcpb
-          path: /home/runner/work/PensionMCP/PensionMCP/mcpb/eoinprout-PensionMCP-0.0.1.mcpb
+      #- name: Upload MCPB Installer
+      #  uses: actions/upload-artifact@v7.0.1             
+      #  with:
+      #    archive: false 
+      #    name: eoinprout-PensionMCP-0.0.1.mcpb
+      #    path: /home/runner/work/PensionMCP/PensionMCP/mcpb/eoinprout-PensionMCP-0.0.1.mcpb
 
       
       - name: Upload MCPB to GitHub Release
