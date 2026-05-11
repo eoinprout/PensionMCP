@@ -1,8 +1,8 @@
 {
   "manifest_version": "0.2",
-  "name": "Pension Assistant",
+  "name": "@eoinprout/PensionMCP",
   "version": "0.0.1",
-  "description": "A pension assistant helping with rates, limits and calculations",
+  "description": "EDUCATION PURPOSES ONLY,A pension assistant helping with rates, limits and calculations",
   "author": {
     "name": "Eoin Prout"
   },

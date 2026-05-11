@@ -13,3 +13,9 @@ jobs:
             dotnet-version: ${{env.DOTNET_VERSION}}
         - name: Build Windows PensionMCP EXE
           run: dotnet publish ./PensionMCP/PensionMCP.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish
+        - name: Upload EXE artifact
+          uses: actions/upload-artifact@v7.0.1             
+          with:
+            #archive: false # new feature, but my artefacts are quiet large.
+            name: PensionMCP.exe.zip
+            path: ./publish/PensionMCP.exe
