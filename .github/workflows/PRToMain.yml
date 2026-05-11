@@ -1,0 +1,25 @@
+
+name: WF_UnitTestMCP
+
+on:
+  push:
+    branches: [ "main", "EoinAction1" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  JobUnitTestPensionMCP: #This is the name of the job, and what needs to referenced in the required checks
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+    - name: Build
+      working-directory: TestPensionMCP
+      run: dotnet build
+    - name: Test with Code Coverage
+      working-directory: TestPensionMCP
+      run: dotnet test --verbosity normal  /p:CollectCoverage=true /p:Threshold=80 /p:ThresholdType=line /p:ThresholdStat=total
