@@ -1,5 +1,7 @@
 
 name: WF_UnitTestMCP
+env:
+  DOTNET_VERSION: 10.0.x
 on:
   push:
     branches: [ "main", "EoinAction1" ]
@@ -8,7 +10,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  JobUnitTestPensionMCP: #This is the name of the job, and what needs to referenced in the required checks
+  JobBuildExe:
+    runs-on: ubuntu-latest
+    needs: JobUnitTestPensionMCP
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5.2.0
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+      - name: Build Windows PensionMCP EXE
+        run: dotnet publish ./PensionMCP/PensionMCP.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish
+
+  JobUnitTestPensionMCP: 
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +31,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v5.2.0
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: ${{env.DOTNET_VERSION}}
     - name: Build
       working-directory: TestPensionMCP
       run: dotnet build
