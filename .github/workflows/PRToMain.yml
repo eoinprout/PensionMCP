@@ -14,4 +14,4 @@ jobs:
     uses: ./.github/workflows/reusable-unittests.yml
   
   job-build-windows-exe:
-    uses: .github/workflows/reusable-build-windows-exe.yml
+    uses: ./.github/workflows/reusable-build-windows-exe.yml
