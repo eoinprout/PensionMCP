@@ -1,6 +1,7 @@
 
 name: WF_UnitTestMCP
-
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # was getting a warning when running actions about node 20, so opting to use node 24 now
 on:
   push:
     branches: [ "main", "EoinAction1" ]
