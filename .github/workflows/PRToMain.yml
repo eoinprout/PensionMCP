@@ -23,4 +23,4 @@ jobs:
       run: dotnet build
     - name: Test with Code Coverage
       working-directory: TestPensionMCP
-      run: dotnet test --verbosity normal  /p:CollectCoverage=true /p:Threshold=80 /p:ThresholdType=line /p:ThresholdStat=total
+      run: dotnet test --verbosity normal  /p:CollectCoverage=true /p:Threshold=95 /p:ThresholdType=line /p:ThresholdStat=total
