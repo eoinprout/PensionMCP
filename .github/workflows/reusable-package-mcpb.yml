@@ -39,7 +39,9 @@ jobs:
           name: eoinprout-PensionMCP-0.0.1.mcpb
           path: /home/runner/work/PensionMCP/PensionMCP/mcpb/eoinprout-PensionMCP-0.0.1.mcpb
 
+      
       - name: Upload MCPB to GitHub Release
+        # https://github.com/svenstaro/upload-release-action
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
