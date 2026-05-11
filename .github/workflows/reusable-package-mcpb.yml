@@ -34,5 +34,5 @@ jobs:
         uses: actions/upload-artifact@v7.0.1             
         with:
           archive: false 
-          name: PensionMCP.exe
-          path: ./publish/PensionMCP.exe
+          name: eoinprout-PensionMCP-0.0.1.mcpb
+          path: /home/runner/work/PensionMCP/PensionMCP/mcpb/eoinprout-PensionMCP-0.0.1.mcpb
