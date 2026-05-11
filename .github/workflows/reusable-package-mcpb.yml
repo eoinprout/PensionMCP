@@ -37,3 +37,13 @@ jobs:
           archive: false 
           name: eoinprout-PensionMCP-0.0.1.mcpb
           path: /home/runner/work/PensionMCP/PensionMCP/mcpb/eoinprout-PensionMCP-0.0.1.mcpb
+
+      - name: Upload MCPB to GitHub Releases
+        uses: Shopify/upload-to-release@v2.0.0
+        with:
+          name: eoinprout-PensionMCP-0.0.1.mcpb
+          path: ./mcpb/eoinprout-PensionMCP-0.0.1.mcpb
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      
+
+        
