@@ -22,7 +22,7 @@ jobs:
       - name: Download built EXE
         uses: actions/download-artifact@v8.0.1
         with:
-          name: PensionMCP.exe
+          name: PensionMCP.exe.zip
           path: ./mcpb/server
 
       - uses: NimbleBrainInc/mcpb-pack@v3

@@ -16,6 +16,6 @@ jobs:
         - name: Upload EXE artifact
           uses: actions/upload-artifact@v7.0.1             
           with:
-            archive: false # new feature, but my artefacts are quiet large.
-            name: PensionMCP.exe
+            #archive: false # new feature, but my artefacts are quiet large.
+            name: PensionMCP.exe.zip
             path: ./publish/PensionMCP.exe
