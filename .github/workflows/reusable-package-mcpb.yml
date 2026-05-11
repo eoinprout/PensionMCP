@@ -1,8 +1,12 @@
 name: Build Windows MCPB Installer
 
 on:
+  workflow_dispatch:
+  workflow_call:
   push:
-    branches: [ "EoinAction*" ]
+    #branches: [ "EoinAction*" ]
+    tags:
+      - 'v*'
 
 #permissions:
 #  contents: write
