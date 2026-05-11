@@ -5,7 +5,7 @@ namespace TestPensionMCP.Engine
     internal sealed class PensionCalculatorTests
     {
 
-        [TestCase(0, 60000, 90001)]
+        [TestCase(0, 60000, 9000)]
         [TestCase(29, 60000, 9000)]
         [TestCase(30, 60000, 12000)]
         [TestCase(39, 60000, 12000)]
