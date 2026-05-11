@@ -1,0 +1,21 @@
+name: Unit Test PensionMCP
+on:
+  workflow_call:
+
+jobs:
+  JobUnitTestPensionMCP: 
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v6.0.2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5.2.0
+      with:
+        dotnet-version: ${{env.DOTNET_VERSION}}
+    - name: Build
+      working-directory: TestPensionMCP
+      run: dotnet build
+    - name: Test with Code Coverage
+      working-directory: TestPensionMCP
+      run: dotnet test --verbosity normal  /p:CollectCoverage=true /p:Threshold=80 /p:ThresholdType=line /p:ThresholdStat=total
