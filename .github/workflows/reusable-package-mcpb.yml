@@ -1,16 +1,13 @@
 name: Build Windows MCPB Installer
 
 on:
-  workflow_dispatch:
-  workflow_call:
   push:
     #branches: [ "EoinAction*" ]
     tags:
       - 'v*'
 
-#permissions:
-#  contents: write
-  # id-token: write
+permissions:
+  contents: write
 
 ## see  https://github.com/NimbleBrainInc/mcpb-pack for instructions
 jobs:
@@ -42,12 +39,14 @@ jobs:
           name: eoinprout-PensionMCP-0.0.1.mcpb
           path: /home/runner/work/PensionMCP/PensionMCP/mcpb/eoinprout-PensionMCP-0.0.1.mcpb
 
-      - name: Upload MCPB to GitHub Releases
-        uses: Shopify/upload-to-release@v2.0.0
+      - name: Upload MCPB to GitHub Release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: eoinprout-PensionMCP-0.0.1.mcpb
-          path: ./mcpb/eoinprout-PensionMCP-0.0.1.mcpb
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./mcpb/*.mcpb
+          file_glob: true
+          tag: ${{ github.ref }}
+          overwrite: true
       
 
         
