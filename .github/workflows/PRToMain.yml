@@ -4,21 +4,21 @@ env:
   DOTNET_VERSION: 10.0.x
 on:
   push:
-    branches: [ "main","EoinLint*" ]
+    branches: [ "main"]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
-  job-lint:
-    uses: ./.github/workflows/reusable-lint.yml
-  
   job-unit-test:
-    needs: job-lint
     uses: ./.github/workflows/reusable-unittests.yml
   
   job-build-windows-exe:
     needs: job-unit-test
     uses: ./.github/workflows/reusable-build-windows-exe.yml
+
+  job-lint:
+    needs: job-build-windows-exe
+    uses: ./.github/workflows/reusable-lint.yml
 
   
