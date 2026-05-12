@@ -16,7 +16,7 @@ jobs:
       # https://github.com/marketplace/actions/dora-deployment-frequency
       - uses: DeveloperMetrics/deployment-frequency@v1.5.22
         with:
-          workflows: 'WF_UnitTestMCP'
+          workflows: 'Release'
           actions-token: ${{ secrets.GITHUB_TOKEN }}
 
 
