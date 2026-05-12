@@ -1,0 +1,24 @@
+name: dora
+on:
+  workflow_call:
+  pull_request:
+    branches: [ "Eoin*" ]
+  workflow_dispatch:
+
+  #schedule:
+  #  - cron: '0 23 * * *' # everday at 11pm
+  #    timezone: "Europe/Dublin"
+
+jobs:
+  dora-deployment-frequency: 
+    runs-on: ubuntu-latest
+
+
+    steps:
+      # https://github.com/marketplace/actions/dora-deployment-frequency
+      - uses: DeveloperMetrics/deployment-frequency@v1.5.22
+        with:
+          workflows: 'Build Windows MCPB Installer'
+
+
+ 
