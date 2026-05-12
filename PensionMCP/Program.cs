@@ -44,10 +44,6 @@ using (var scope = app.Services.CreateScope())
     logger.LogInformation(dbExists ? "Database already existed." : "Database was created.");
 }
 
-string userInput = Console.ReadLine();
-Console.WriteLine(userInput, 123);
-
-
 await app.RunAsync();
 
 
