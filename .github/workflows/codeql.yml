@@ -16,9 +16,9 @@ on:
     tags:
       - 'v*'
       - 'codeql*'  
-    branches: [ "EoinCodeQL*" ]
-  #pull_request:
-  #  branches: [ "main" ]
+    branches: [ "main", "EoinCodeQL*" ]
+  pull_request:
+    branches: [ "main" ]
   schedule:
     - cron: '0 16 * * *' # everday at 4pm
       timezone: "Europe/Dublin"
