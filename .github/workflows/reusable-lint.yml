@@ -12,7 +12,7 @@ jobs:
       
       # superlinter needs the main branch to be able to do comparison
       - name: Checkout main
-        uses: actions/checkout@6.0.2
+        uses: actions/checkout@v6.0.2
         with:
           ref: main
 
