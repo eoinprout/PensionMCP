@@ -18,6 +18,8 @@ jobs:
 
       - name: Checkout the current branch
         uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
         
 
       - name: Run Super-Linter
