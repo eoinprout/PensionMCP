@@ -13,15 +13,15 @@ name: "CodeQL Advanced"
 
 on:
   push:
-    tags:
-      - 'v*'
-      - 'codeql*'  
-    branches: [ "main", "EoinCodeQL*" ]
+    #tags:
+    #  - 'v*'
+    #  - 'codeql*'  
+    branches: [ "main" ] # this appears to be required to get the results into the code scan screen
   pull_request:
     branches: [ "main" ]
-  schedule:
-    - cron: '0 16 * * *' # everday at 4pm
-      timezone: "Europe/Dublin"
+  #schedule:
+  #  - cron: '0 23 * * *' # everday at 11pm
+  #    timezone: "Europe/Dublin"
   
 
 jobs:
