@@ -1,8 +1,6 @@
 name: dora
 on:
   workflow_call:
-  pull_request:
-    branches: [ "Eoin*" ]
   workflow_dispatch:
 
   #schedule:
@@ -18,7 +16,7 @@ jobs:
       # https://github.com/marketplace/actions/dora-deployment-frequency
       - uses: DeveloperMetrics/deployment-frequency@v1.5.22
         with:
-          workflows: 'Build Windows MCPB Installer'
+          workflows: 'Build-Installer'
           actions-token: ${{ secrets.GITHUB_TOKEN }}
 
 
