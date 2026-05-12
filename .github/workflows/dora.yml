@@ -19,6 +19,7 @@ jobs:
       - uses: DeveloperMetrics/deployment-frequency@v1.5.22
         with:
           workflows: 'Build Windows MCPB Installer'
+          actions-token: ${{ secrets.GITHUB_TOKEN }}
 
 
  
