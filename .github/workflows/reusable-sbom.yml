@@ -3,7 +3,7 @@ on:
   workflow_call:
   workflow_dispatch:
   push:
-    branches: [ "EoinSbom*" ]
+    branches: [ "EoinSbom*" ] 
 
 jobs:
   job-sbom: 
