@@ -431,3 +431,4 @@ FodyWeavers.xsd
 /mcpb/*.mcpb
 /mcpb/server/PensionMCP.exe
 /temp
+/_site
