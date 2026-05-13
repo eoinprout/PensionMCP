@@ -9,9 +9,13 @@ on:
   workflow_dispatch:
 
 jobs:
+  # see docs  https://dotnet.github.io/docfx/
   job-build-docs:
     name: Build DocFX Site
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - uses: actions/checkout@v6.0.2
@@ -28,3 +32,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
