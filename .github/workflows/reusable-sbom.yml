@@ -2,8 +2,6 @@ name: Create SBOM
 on:
   workflow_call:
   workflow_dispatch:
-  push:
-    branches: [ "EoinSbom*" ] 
 
 jobs:
   job-sbom: 

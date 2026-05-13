@@ -2,10 +2,8 @@ name: Build Windows MCPB Installer
 
 on:
   push:
-    #branches: [ "EoinAction*" ]
     tags:
       - 'v*'
-      - 'test*'
 
 permissions:
   contents: write
