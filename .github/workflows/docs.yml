@@ -8,6 +8,10 @@ on:
       - 'v*'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }} # only want one docs at a time to run
+  cancel-in-progress: true # last should win, as there is only on GH page
+
 permissions:
   actions: read
   pages: write
