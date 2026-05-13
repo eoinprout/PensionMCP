@@ -18,4 +18,4 @@ It will produce the PensionMCP.exe and also the MCPB installer in the ./publish 
 ## Aknowledgements 
 
 .gitignore was taken from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
-.editorconfig is the default added by visual studio 
+.editorconfig is the default added by visual studio  
