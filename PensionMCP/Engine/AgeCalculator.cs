@@ -3,7 +3,7 @@
     public static class AgeCalculator
     {
         /// <summary>
-        /// Returns the current age of someone on a particular day based on their date of birth.
+        /// Returns the current age of someone on a particular day based on their date of birth
         /// </summary>
         /// <param name="dateOfBirth">Persons date of birth</param>
         /// <param name="asOfDate">The date on which to determine the persons age</param>
