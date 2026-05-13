@@ -1,5 +1,8 @@
 ﻿namespace PensionMCP.Engine
 {
+    /// <summary>
+    /// Contains age based calculations
+    /// </summary>
     public static class AgeCalculator
     {
         /// <summary>
