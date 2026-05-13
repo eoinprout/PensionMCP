@@ -13,9 +13,9 @@ name: "CodeQL Advanced"
 
 on:
   push:
-    #tags:
-    #  - 'v*'
-    #  - 'codeql*'  
+    tags:
+      - 'v*'
+      - 'codeql*'  # If you want to CodeQL a branch or particular commit just tag it
     branches: [ "main" ] # this appears to be required to get the results into the code scan screen
   pull_request:
     branches: [ "main" ]
