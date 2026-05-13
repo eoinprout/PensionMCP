@@ -5,7 +5,7 @@ on:
     branches:
       - EoinDocs*
     tags:
-      - 'r*'
+      - 'v*'
   workflow_dispatch:
 
 permissions:
