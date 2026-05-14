@@ -34,7 +34,8 @@ jobs:
           name: bom.xml
           path: ./sbom
 
-      - uses: NimbleBrainInc/mcpb-pack@v3
+      # using commit SHA rather than v3.0.0 tag, for security.
+      - uses: NimbleBrainInc/mcpb-pack@e74c82722fa4b954ce7740f875d6c437ae471df6 
         with:
           directory: mcpb
           upload: false # Nimble Brain publishes to mpak.dev, Prefer Github releases
@@ -50,7 +51,8 @@ jobs:
       
       - name: Upload MCPB to GitHub Release
         # https://github.com/svenstaro/upload-release-action
-        uses: svenstaro/upload-release-action@v2
+        # V2.11.5 using SHA rather than tag for security
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./mcpb/*.mcpb
