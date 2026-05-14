@@ -16,6 +16,8 @@ jobs:
           uses: actions/setup-dotnet@v5.2.0
           with:
             dotnet-version: ${{env.DOTNET_VERSION}}
+            cache: true
+            cache-dependency-path: '**/packages.lock.json'
         - name: Build Windows PensionMCP EXE
           run: dotnet publish ./PensionMCP/PensionMCP.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish
         - name: Upload EXE artifact
