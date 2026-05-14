@@ -2,6 +2,11 @@ name: Unit Test PensionMCP
 on:
   workflow_call:
 
+permissions:
+  # only required for workflows in private repositories
+  actions: read
+  contents: read
+
 jobs:
   JobUnitTestPensionMCP: 
     runs-on: ubuntu-latest

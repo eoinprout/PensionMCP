@@ -2,6 +2,11 @@ name: Lint Changes
 on:
   workflow_call:
 
+permissions:
+  # only required for workflows in private repositories
+  actions: read
+  contents: read
+
 jobs:
   lint-changes: 
     runs-on: ubuntu-latest
