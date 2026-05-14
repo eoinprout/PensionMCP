@@ -19,9 +19,9 @@ on:
     branches: [ "main" ] # this appears to be required to get the results into the code scan screen
   pull_request:
     branches: [ "main" ]
-  #schedule:
-  #  - cron: '0 23 * * *' # everday at 11pm
-  #    timezone: "Europe/Dublin"
+  schedule:
+    - cron: '0 22 * * *' # everday at 10pm
+      timezone: "Europe/Dublin" # new feature, in since march
   
 
 jobs:
