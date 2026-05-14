@@ -5,7 +5,15 @@ env:
 on:
   pull_request:
     branches: [ "main" ]
+  push:
+    branches: [ "EoinPerm*" ]
+      
   workflow_dispatch:
+
+permissions:
+  # only required for workflows in private repositories
+  actions: read
+  contents: read
 
 jobs:
   job-unit-test:

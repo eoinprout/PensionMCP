@@ -3,6 +3,12 @@ on:
   workflow_call:
   workflow_dispatch:
 
+permissions:
+
+  # only required for workflows in private repositories
+  actions: read
+  contents: read
+
 jobs:
   job-sbom: 
     runs-on: ubuntu-latest
@@ -18,3 +24,4 @@ jobs:
         with:
           name: bom.xml
           path: ./bom.xml
+          retention-days: 1 # spotted in docs, can set in yml rather than GitHub UI
