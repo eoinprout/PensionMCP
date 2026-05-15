@@ -15,6 +15,11 @@ run publish.bat
 
 It will produce the PensionMCP.exe and also the MCPB installer in the ./publish folder.
 
+## Installing MCPB
+
+To install the the extentsion into Claude Desktop follow the instructions at  
+https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop
+
 ## Aknowledgements 
 
 .gitignore was taken from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
