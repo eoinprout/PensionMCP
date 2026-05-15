@@ -49,6 +49,8 @@ jobs:
       #    name: eoinprout-PensionMCP-0.0.1.mcpb
       #    path: /home/runner/work/PensionMCP/PensionMCP/mcpb/eoinprout-PensionMCP-0.0.1.mcpb
 
+      - name: Rename MCPB installer
+        run: mv ./mcpb/*.mcpb ./mcpb/PensionMCP.mcpb
       
       - name: Upload MCPB to GitHub Release
         # https://github.com/svenstaro/upload-release-action
