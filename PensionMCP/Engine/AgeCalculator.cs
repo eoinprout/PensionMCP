@@ -43,8 +43,7 @@
         {
             var retirementDate = GetDateTurnsAge(dateOfBirth, retirementAge);
             var months = ((retirementDate.Year - asOf.Year) * 12) + retirementDate.Month - asOf.Month;
-            //if (retirementDate.Day < asOf.Day)
-            //    months--;
+
             return Math.Max(months, 0);
         }
     }
