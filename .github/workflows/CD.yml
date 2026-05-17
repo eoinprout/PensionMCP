@@ -1,4 +1,4 @@
-name: Build Windows MCPB Installer
+name: CD-Release
 
 on:
   push:
