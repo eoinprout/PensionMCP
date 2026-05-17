@@ -13,6 +13,12 @@ or reliance on its outputs.
 To build the MCP server, use the terminal and navigate to ./PensionMCP
 run publish.bat
 
+Before running the publish.bat the MCPB CLI https://github.com/modelcontextprotocol/mcpb must be installed
+```
+npm install -g @anthropic-ai/mcpb
+```
+
+
 It will produce the PensionMCP.exe and also the MCPB installer in the ./publish folder.
 
 ## Installing MCPB
