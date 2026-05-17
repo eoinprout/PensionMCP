@@ -1,5 +1,5 @@
 
-name: WF_UnitTestMCP
+name: CI
 env:
   DOTNET_VERSION: 10.0.x
 on:
