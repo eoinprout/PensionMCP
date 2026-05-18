@@ -33,7 +33,7 @@
         }
 
         /// <summary>
-        /// Returns the number of whole months from today until the clients retirement birthday.
+        /// Returns the number of whole months from today until the clients retirement birthday
         /// </summary>
         /// <param name="dateOfBirth">Clients date of birth</param>
         /// <param name="retirementAge">Target retirement age in years</param>
